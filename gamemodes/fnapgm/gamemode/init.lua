@@ -7,7 +7,7 @@
 
 AddCSLuaFile("shared.lua")
 include('shared.lua')
-resource.AddWorkshop("408243366")
+resource.AddWorkshop("2053617005")
 DeriveGamemode("fnafgm")
 
 if game.GetMap() == "fnap_scc" then
