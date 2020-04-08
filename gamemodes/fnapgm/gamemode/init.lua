@@ -71,7 +71,7 @@ function fnapgmStartNightCustom(ply)
 
 			fnafgmVarsUpdate()
 
-			for k, v in pairs(team.GetPlayers(1)) do
+			for k, v in pairs(player.GetAll()) do
 				if v:Alive() then
 					v:ScreenFade(SCREENFADE.OUT, color_black, 0.25, 8.2 - 1.3 - 0.25)
 				end
@@ -81,19 +81,6 @@ function fnapgmStartNightCustom(ply)
 			GAMEMODE.Vars.LightUse[2] = false
 
 			timer.Remove("fnafgmTempoStartU")
-
-		end)
-
-		timer.Create("fnafgmTempoStartM", 1.6, 1, function()
-
-			for k, v in pairs(player.GetAll()) do
-				if v:Team() == 1 and v:Alive() then
-					v:SetPos(GAMEMODE.FNaFView.fnap_scc[1])
-					v:SetEyeAngles(GAMEMODE.FNaFView.fnap_scc[2])
-				end
-			end
-
-			timer.Remove("fnafgmTempoStartM")
 
 		end)
 
@@ -121,10 +108,6 @@ function fnapgmStartNightCustom(ply)
 					end
 				end)
 
-			end
-
-			for k, v in pairs(team.GetPlayers(1)) do
-				GAMEMODE:GoFNaFView(v, true)
 			end
 
 			for k, v in pairs(GAMEMODE.Vars.Animatronics) do
@@ -158,7 +141,7 @@ function fnapgmStartNightCustom(ply)
 
 					for k, v in pairs(player.GetAll()) do
 
-						if v:Team() != TEAM_UNASSIGNED and v:Alive() then
+						if v:Alive() then
 
 							v:SendLua('GAMEMODE:JumpscareOverlay("deathscreens/pinkieisscary",2)')
 							v:SendLua([[LocalPlayer():EmitSound("fnapgm_pinkiescare")]])
@@ -181,7 +164,7 @@ function fnapgmStartNightCustom(ply)
 
 					for k, v in pairs(player.GetAll()) do
 
-						if v:Team() != TEAM_UNASSIGNED and v:Alive() then
+						if v:Alive() then
 
 							v:SendLua('GAMEMODE:JumpscareOverlay("deathscreens/pinkieisscary",2)')
 							v:SendLua([[LocalPlayer():EmitSound("fnapgm_pinkiescare")]])
@@ -222,7 +205,7 @@ function fnapgmStartNightCustom(ply)
 
 			fnafgmVarsUpdate()
 
-			for k, v in pairs(team.GetPlayers(1)) do
+			for k, v in pairs(player.GetAll()) do
 				if v:Alive() then
 					v:ScreenFade(SCREENFADE.OUT, color_black, 0.25, 8.2 - 1.3 - 0.25)
 				end
@@ -232,29 +215,12 @@ function fnapgmStartNightCustom(ply)
 
 		end)
 
-		timer.Create("fnafgmTempoStartM", 1.6, 1, function()
-
-			for k, v in pairs(player.GetAll()) do
-				if v:Team() == 1 and v:Alive() then
-					v:SetPos(GAMEMODE.FNaFView.fnap_cb[1])
-					v:SetEyeAngles(GAMEMODE.FNaFView.fnap_cb[2])
-				end
-			end
-
-			timer.Remove("fnafgmTempoStartM")
-
-		end)
-
 		timer.Create("fnafgmTempoStart", 8.2, 1, function()
 
 			GAMEMODE.Vars.tempostart = false
 
 			fnafgmVarsUpdate()
 			fnafgmPowerUpdate()
-
-			for k, v in pairs(team.GetPlayers(1)) do
-				GAMEMODE:GoFNaFView(v, true)
-			end
 
 			timer.Create("fnafgmTimeThink", GAMEMODE.HourTime, 0, fnafgmTimeThink)
 
@@ -314,7 +280,7 @@ function fnapgmPowerCalc()
 
 			local tabactualuse = false --Calc tab usage
 
-			for k, v in pairs(team.GetPlayers(1)) do
+			for k, v in pairs(player.GetAll()) do
 
 				if GAMEMODE.Vars.tabused[v] and GAMEMODE.Vars.tabused[v] == true then
 
@@ -394,12 +360,6 @@ function fnapgmPowerCalc()
 
 			ents.FindByName("NoMorePower")[1]:Fire("use")
 
-			for k, v in pairs(player.GetAll()) do
-				if v:Team() == 1 and v:Alive() then
-					v:SetPos(Vector(-465, -255, 32))
-				end
-			end
-
 			for k, v in pairs(GAMEMODE.Vars.Animatronics) do
 
 				if k != GAMEMODE.Animatronic.RainbowDash then
@@ -424,6 +384,21 @@ function fnapgmPowerCalc()
 				end
 
 				timer.Remove("fnapgmNoMorePower")
+
+			end)
+
+			timer.Create("fnafgmPowerOff3", 34, 1, function()
+
+				hook.Call("fnafgmGeneralDeath")
+
+				timer.Remove("fnafgmTimeThink")
+				timer.Remove("fnafgmPowerOff1")
+				timer.Remove("fnafgmPowerOff2")
+				timer.Remove("fnafgmPowerOff3")
+
+				fnafgmRestartNight()
+
+				timer.Remove("fnafgmPowerOff3")
 
 			end)
 
@@ -454,7 +429,7 @@ function fnapgmPowerCalc()
 
 			end
 
-			for k, v in pairs(team.GetPlayers(1)) do
+			for k, v in pairs(player.GetAll()) do
 
 				if v:FlashlightIsOn() then
 
@@ -486,7 +461,7 @@ function fnapgmPowerCalc()
 
 			GAMEMODE.Vars.poweroff = true
 
-			for k, v in pairs(team.GetPlayers(1)) do
+			for k, v in pairs(player.GetAll()) do
 
 				if v:FlashlightIsOn() and !fnafgmPlayerCanByPass(v, "flashlight") then
 
@@ -717,11 +692,7 @@ function fnapgmRainbowDash(self)
 			self.FoxyMove2 = true
 			for k, v in pairs(player.GetAll()) do
 
-				if v:Team() != TEAM_CONNECTING and v:Team() != TEAM_UNASSIGNED then
-
-					v:SendLua([[LocalPlayer():EmitSound("fnapgm_runrainbowdash")]])
-
-				end
+				v:SendLua([[LocalPlayer():EmitSound("fnapgm_runrainbowdash")]])
 
 			end
 		end
@@ -818,21 +789,15 @@ function fnapgmGoJumpscare(me, self, timet)
 
 		if me == GAMEMODE.Animatronic.Applejack then
 			for k, v in pairs(player.GetAll()) do
-				if v:Team() != TEAM_CONNECTING and v:Team() != TEAM_UNASSIGNED then
-					v:SendLua([[LocalPlayer():EmitSound("fnapgm_applejackscream")]])
-				end
+				v:SendLua([[LocalPlayer():EmitSound("fnapgm_applejackscream")]])
 			end
 		elseif me == GAMEMODE.Animatronic.Rarity then
 			for k, v in pairs(player.GetAll()) do
-				if v:Team() != TEAM_CONNECTING and v:Team() != TEAM_UNASSIGNED then
-					v:SendLua([[LocalPlayer():EmitSound("fnapgm_rarityknock")]])
-				end
+				v:SendLua([[LocalPlayer():EmitSound("fnapgm_rarityknock")]])
 			end
 		elseif me != GAMEMODE.Animatronic.RainbowDash then
 			for k, v in pairs(player.GetAll()) do
-				if v:Team() != TEAM_CONNECTING and v:Team() != TEAM_UNASSIGNED then
-					v:SendLua([[LocalPlayer():EmitSound("fnapgm_officesnd")]])
-				end
+				v:SendLua([[LocalPlayer():EmitSound("fnapgm_officesnd")]])
 			end
 		end
 
@@ -856,7 +821,7 @@ function fnapgmGoJumpscare(me, self, timet)
 
 			local sgdead = true
 			for k, v in pairs(player.GetAll()) do
-				if v:Alive() and v:Team() == 1 then
+				if v:Alive() then
 					sgdead = false
 					break
 				end
@@ -920,7 +885,7 @@ function fnapgmJumpscare(me, self)
 
 			for k, v in pairs(player.GetAll()) do
 
-				if v:Team() == 1 and v:Alive() and v.IsOnSecurityRoom then
+				if v:Alive() and v.IsOnSecurityRoom then
 
 					v:SendLua('GAMEMODE:JumpscareOverlay("fnapgm/screamers/fnap_scc_' .. me .. '")')
 					v:SendLua([[LocalPlayer():EmitSound("fnafgm_scream")]])
@@ -936,7 +901,7 @@ function fnapgmJumpscare(me, self)
 
 			for k, v in pairs(player.GetAll()) do
 
-				if v:Team() == 1 and v:Alive() and v.IsOnSecurityRoom then
+				if v:Alive() and v.IsOnSecurityRoom then
 
 					v:SendLua('GAMEMODE:JumpscareOverlay("fnapgm/screamers/fnap_scc_' .. me .. '")')
 					v:SendLua([[LocalPlayer():EmitSound("fnafgm_scream")]])
@@ -952,7 +917,7 @@ function fnapgmJumpscare(me, self)
 
 			for k, v in pairs(player.GetAll()) do
 
-				if v:Team() == 1 and v:Alive() and v.IsOnSecurityRoom then
+				if v:Alive() and v.IsOnSecurityRoom then
 
 					v:SendLua('GAMEMODE:JumpscareOverlay("fnapgm/screamers/fnap_scc_' .. me .. '")')
 					v:SendLua([[LocalPlayer():EmitSound("fnafgm_scream")]])
@@ -968,7 +933,7 @@ function fnapgmJumpscare(me, self)
 
 			for k, v in pairs(player.GetAll()) do
 
-				if v:Team() == 1 and v:Alive() and v.IsOnSecurityRoom then
+				if v:Alive() and v.IsOnSecurityRoom then
 
 					v:SendLua('GAMEMODE:JumpscareOverlay("fnapgm/screamers/fnap_scc_' .. me .. '")')
 					v:SendLua([[LocalPlayer():EmitSound("fnafgm_scream")]])
@@ -984,7 +949,7 @@ function fnapgmJumpscare(me, self)
 
 			for k, v in pairs(player.GetAll()) do
 
-				if v:Team() == 1 and v:Alive() and v.IsOnSecurityRoom then
+				if v:Alive() and v.IsOnSecurityRoom then
 
 					v:SendLua('GAMEMODE:JumpscareOverlay("fnapgm/screamers/fnap_scc_' .. me .. '")')
 					v:SendLua([[LocalPlayer():EmitSound("fnafgm_scream")]])
@@ -1000,7 +965,7 @@ function fnapgmJumpscare(me, self)
 
 				for k, v in pairs(player.GetAll()) do
 
-					if v:Team() == 1 and v:Alive() and v.IsOnSecurityRoom then
+					if v:Alive() and v.IsOnSecurityRoom then
 
 						v:SendLua('GAMEMODE:JumpscareOverlay("fnapgm/screamers/fnap_scc_' .. me .. '")')
 						v:SendLua([[LocalPlayer():EmitSound("fnafgm_scream")]])
@@ -1016,11 +981,7 @@ function fnapgmJumpscare(me, self)
 
 			for k, v in pairs(player.GetAll()) do
 
-				if v:Team() != TEAM_CONNECTING and v:Team() != TEAM_UNASSIGNED then
-
-					v:SendLua([[LocalPlayer():EmitSound("fnapgm_rainbowknock")]])
-
-				end
+				v:SendLua([[LocalPlayer():EmitSound("fnapgm_rainbowknock")]])
 
 			end
 
