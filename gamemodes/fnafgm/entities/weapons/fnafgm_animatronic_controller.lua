@@ -38,7 +38,6 @@ SWEP.ViewModel				= "models/weapons/c_arms.mdl"
 SWEP.WorldModel				= ""
 
 SWEP.Spawnable = true
-SWEP.AdminOnly = true
 
 if CLIENT then
 	SWEP.WepSelectIcon = surface.GetTextureID(GAMEMODE.Materials_animatronic)
@@ -56,7 +55,7 @@ function SWEP:SecondaryAttack()
 
 	if table.Count(ents.FindByClass("fnafgm_camera")) == 0 then return end
 
-	if SERVER then
+	if SERVER and game.GetMap() == "fnap_scc" and self.Owner:GetPos():WithinAABox(Vector(353.805267, 359.527588, 30), Vector(765.545349, 605.966675, 191.070175)) then
 		net.Start("fnafgmAnimatronicsController")
 		net.Send(self.Owner)
 	end
