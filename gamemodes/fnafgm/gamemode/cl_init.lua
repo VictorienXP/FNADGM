@@ -220,8 +220,6 @@ function GM:DrawFnafButton(w, h, color)
 
 end
 
-include('cl_scoreboard.lua')
-include('cl_voice.lua')
 include('cl_fnafview.lua')
 include('cl_menu.lua')
 include('cl_secret.lua')
@@ -266,51 +264,6 @@ function GM:HUDItemPickedUp() return false end
 function GM:HUDAmmoPickedUp() return false end
 
 
-function GM:HUDDrawTargetID()
-
-	local tr = util.GetPlayerTrace(LocalPlayer())
-	local trace = util.TraceLine(tr)
-	if !trace.Hit then return end
-	if !trace.HitNonWorld then return end
-
-	local text = "ERROR"
-	local font = "FNAFGMID"
-
-	if !GAMEMODE.Vars.fnafviewactive and !IsValid(GAMEMODE.Vars.Monitor)
-	and (trace.Entity:IsPlayer() and (LocalPlayer():Team() == trace.Entity:Team() or LocalPlayer():Team() == 2 or LocalPlayer():Team() == TEAM_SPECTATOR)) then
-		text = trace.Entity:Nick()
-	elseif debugmode then
-		text = trace.Entity:GetClass()
-	else
-		return
-	end
-
-	surface.SetFont(font)
-	local w, h = surface.GetTextSize(text)
-
-	local MouseX, MouseY = gui.MousePos()
-
-	if MouseX == 0 && MouseY == 0 then
-
-		MouseX = ScrW() / 2
-		MouseY = ScrH() / 2
-
-	end
-
-	local x = MouseX
-	local y = MouseY
-
-	x = x - w / 2
-	y = y + 30
-
-	-- The fonts internal drop shadow looks lousy with AA on
-	draw.SimpleText(text, font, x + 1, y + 1, Color(0,0,0,120))
-	draw.SimpleText(text, font, x + 2, y + 2, Color(0,0,0,50))
-	draw.SimpleText(text, font, x, y, self:GetTeamColor(trace.Entity))
-
-end
-
-
 fnafgmHUDhide = {
 	CHudHealth			= true,
 	CHudBattery			= true,
@@ -323,8 +276,6 @@ hook.Add("HUDShouldDraw", "HideHUD", function(name)
 	if fnafgmHUDhide[name] then
 		return false
 	elseif name == "CHudCrosshair" and GetConVarNumber("cl_drawhud") == 0 then
-		return false
-	elseif name == "CHudCrosshair" and LocalPlayer():Team() == TEAM_UNASSIGNED then
 		return false
 	elseif name == "CHudCrosshair" and GAMEMODE.Vars.fnafviewactive then
 		return false
@@ -440,7 +391,7 @@ function GM:HUDPaint()
 	if GAMEMODE.Vars.b87 then return end
 
 	local H = 46
-	if client:Team() != TEAM_UNASSIGNED then
+	if true then
 
 		if GAMEMODE.Vars.nightpassed or GAMEMODE.Vars.gameend then
 
@@ -456,10 +407,6 @@ function GM:HUDPaint()
 				draw.DrawText((GAMEMODE.TranslatedStrings.tonight or GAMEMODE.Strings.en.tonight) .. " " .. (GAMEMODE.Vars.night or 0) + 1, "FNAFGMNIGHT", ScrW() / 2, ScrH() * 0.25, GAMEMODE.Colors_default, TEXT_ALIGN_CENTER)
 			else
 				draw.DrawText((GAMEMODE.TranslatedStrings.tonight or GAMEMODE.Strings.en.tonight) .. " " .. (GAMEMODE.Vars.night or 0) + 1, "FNAFGMNIGHT", ScrW() - 64, H + 64, GAMEMODE.Colors_default, TEXT_ALIGN_RIGHT)
-			end
-
-			if client:Team() == 2 then
-				draw.DrawText(string.upper(GAMEMODE.TranslatedStrings.startanimatronics or GAMEMODE.Strings.en.startanimatronics), "FNAFGMNIGHT", ScrW() * 0.5, ScrH() * 0.4, Color(170, 0, 0, 255), TEXT_ALIGN_CENTER)
 			end
 
 		elseif !GAMEMODE.Vars.tempostart then
@@ -521,7 +468,7 @@ function GM:HUDPaint()
 
 				end
 
-			elseif GAMEMODE.FT != 2 and (client:Team() != 1 or (!GAMEMODE.Vars.poweroff and client:Alive()) or (!game.SinglePlayer() and !client:Alive() and !GAMEMODE.Vars.poweroff)) then
+			elseif GAMEMODE.FT != 2 and ((!GAMEMODE.Vars.poweroff and client:Alive()) or (!game.SinglePlayer() and !client:Alive() and !GAMEMODE.Vars.poweroff)) then
 
 				local time = GAMEMODE.Vars.time
 				local AMPM = GAMEMODE.Vars.AMPM
@@ -589,16 +536,6 @@ function GM:HUDPaint()
 
 			end
 
-			if client:Team() ~= 1 or !client:Alive() and !game.SinglePlayer() then
-				local alivec = 0
-				for k, v in pairs(player.GetAll()) do
-					if v:Alive() and v:Team() == 1 then
-						alivec = alivec + 1
-					end
-				end
-				draw.DrawText(team.GetName(1) .. ": " .. alivec .. "/" .. team.NumPlayers(1), "FNAFGMID", 46, H, GAMEMODE.Colors_default, TEXT_ALIGN_LEFT)
-			end
-
 		elseif game.GetMap() == "fnaf4house" or game.GetMap() == "fnaf4noclips" or game.GetMap() == "fnaf4versus" then
 
 			draw.DrawText((GAMEMODE.TranslatedStrings.night or GAMEMODE.Strings.en.night) .. " " .. GAMEMODE.Vars.night, "FNAFGMA4TIME", 32, 32, GAMEMODE.Colors_default, TEXT_ALIGN_LEFT)
@@ -623,34 +560,6 @@ function GM:HUDPaint()
 
 	end
 
-	if GAMEMODE.Vars.SGvsA and client:Team() == TEAM_UNASSIGNED and !GAMEMODE.Vars.poweroff then
-		draw.DrawText(string.upper(GAMEMODE.TranslatedStrings.unassigned_SGvsA or GAMEMODE.Strings.en.unassigned_SGvsA), "FNAFGMNIGHT", ScrW() * 0.5, ScrH() * 0.8, GAMEMODE.Colors_default, TEXT_ALIGN_CENTER)
-	elseif client:Team() == TEAM_UNASSIGNED and GAMEMODE.Vars.poweroff and game.GetMap() != "fnaf2noevents" then
-		draw.DrawText(string.upper(GAMEMODE.TranslatedStrings.unassigned_powerdown or GAMEMODE.Strings.en.unassigned_powerdown), "FNAFGMNIGHT", ScrW() * 0.5, ScrH() * 0.48, Color(170, 0, 0, 255), TEXT_ALIGN_CENTER)
-	end
-
-	if GAMEMODE.Vars.willviewcheck and client:Team() == TEAM_UNASSIGNED then
-
-		if game.GetMap() == "freddysnoevent" then
-
-			draw.DrawText(client:GetName(), "FNAFGMCHECK", ScrW() / 2 - 50, ScrH() / 2 - 4, Color(0, 0, 0, 255), TEXT_ALIGN_CENTER)
-
-		elseif game.GetMap() == "fnaf2noevents" and !GAMEMODE.Vars.overfive then
-
-			draw.DrawText(client:GetName(), "FNAFGMCHECK", ScrW() / 2 - 50, ScrH() / 2 - 50, Color(0, 0, 0, 255), TEXT_ALIGN_CENTER)
-
-		elseif game.GetMap() == "fnaf2noevents" then
-
-			draw.DrawText(client:GetName(), "FNAFGMCHECK", 128, ScrH() - 370, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT)
-
-		elseif game.GetMap() == "fnap_scc" then
-
-			draw.DrawText(client:GetName(), "FNAFGMCHECK", ScrW() / 2 - 50, ScrH() / 2 - 45, Color(0, 0, 0, 255), TEXT_ALIGN_CENTER)
-
-		end
-
-	end
-
 end
 
 hook.Add("PreDrawHalos", "fnafgmHalos", function()
@@ -662,7 +571,7 @@ hook.Add("PreDrawHalos", "fnafgmHalos", function()
 	local tab2 = {}
 	local tab3 = {}
 
-	if game.GetMap() == "fnap_scc" and client:Team() == 1 and !GAMEMODE.Vars.startday and !GAMEMODE.Vars.nightpassed and !GAMEMODE.Vars.gameend then
+	if game.GetMap() == "fnap_scc" and !GAMEMODE.Vars.startday and !GAMEMODE.Vars.nightpassed and !GAMEMODE.Vars.gameend then
 
 		local BoxCorner = Vector(-313, -408, 0)
 		local OppositeCorner = Vector(-374, -371, -70)
@@ -674,49 +583,6 @@ hook.Add("PreDrawHalos", "fnafgmHalos", function()
 		end
 
 		halo.Add(tab, GAMEMODE.Colors_surl, 1, 1, 1, true, true)
-
-	end
-
-	if client:Team() == 2 then
-
-		for k,v in pairs(player.GetAll()) do
-			if v:Team() == 1 and client:Alive() and v:Alive() then
-				table.insert(tab, v)
-			end
-		end
-
-		for k,v in pairs(ents.FindByClass("fnafgm_animatronic")) do
-			if client:Alive() then
-				table.insert(tab2, v)
-			end
-		end
-
-		halo.Add(tab, Color(170, 0, 0), 1, 1, 1, true, true)
-		halo.Add(tab2, Color(85, 85, 85), 1, 1, 1, true, true)
-
-	end
-
-	if client:Team() == TEAM_SPECTATOR then
-
-		for k,v in pairs(player.GetAll()) do
-			if v:Team() == 1 and v:Alive() then
-				table.insert(tab, v)
-			end
-		end
-
-		for k,v in pairs(player.GetAll()) do
-			if v:Team() == 2 and v:Alive() then
-				table.insert(tab2, v)
-			end
-		end
-
-		for k,v in pairs(ents.FindByClass("fnafgm_animatronic")) do
-			table.insert(tab3, v)
-		end
-
-		halo.Add(tab, team.GetColor(1), 1, 1, 1, true, true)
-		halo.Add(tab2, team.GetColor(2), 1, 1, 1, true, true)
-		halo.Add(tab3, team.GetColor(2), 1, 1, 1, true, true)
 
 	end
 
@@ -762,73 +628,15 @@ hook.Add("HUDPaint", "fnafgmInfo", function()
 end)
 
 
-function GM:OnPlayerChat(player, strText, bTeamOnly, bPlayerIsDead)
-
-	local tab = {}
-
-
-	if bPlayerIsDead then
-		table.insert(tab, Color(255, 30, 40))
-		table.insert(tab, "*DEAD* ")
-	end
-
-	if bTeamOnly then
-		table.insert(tab, Color(30, 160, 40))
-		table.insert(tab, "(TEAM) ")
-	end
-
-	if IsValid(player) then
-		local rankid = player:GetNWInt("XperidiaRank", 0)
-		local rankname = player:GetNWString("XperidiaRankName", "<Unknown rank name>")
-		local rankcolor = player:GetNWString("XperidiaRankColor", "255 255 255 255")
-		if rankid > 0 then
-			table.insert(tab, string.ToColor(rankcolor))
-			table.insert(tab, "{Xperidia " .. rankname .. "} ")
-		end
-		if player:GetUserGroup() != "user" then
-			table.insert(tab, Color(255, 255, 255))
-			table.insert(tab, "[" .. string.upper(string.sub(player:GetUserGroup(), 1, 1)) .. string.sub(player:GetUserGroup(), 2) .. "] ")
-		end
-		table.insert(tab, player)
-	else
-		table.insert(tab, "Console")
-	end
-
-	table.insert(tab, GAMEMODE.Colors_defaultchat)
-	table.insert(tab, ": " .. strText)
-
-	chat.AddText(unpack(tab))
-
-	if fnafgm_cl_chatsound:GetBool() then chat.PlaySound() end
-	if fnafgm_cl_flashwindow:GetBool() then system.FlashWindow() end
-
-	return true
-
-end
-
-
 function GM:RenderScreenspaceEffects()
 	local client = LocalPlayer()
-	if client:Team() == 1 and IsValid(GAMEMODE.Vars.Monitor) and game.GetMap() == "freddysnoevent" and GAMEMODE.Vars.lastcam == 11 then
+	if IsValid(GAMEMODE.Vars.Monitor) and game.GetMap() == "freddysnoevent" and GAMEMODE.Vars.lastcam == 11 then
 		local colormod = {
 			[ "$pp_colour_addr" ] = 0,
 			[ "$pp_colour_addg" ] = 0,
 			[ "$pp_colour_addb" ] = 0,
 			[ "$pp_colour_brightness" ] = 0,
 			[ "$pp_colour_contrast" ] = 0,
-			[ "$pp_colour_colour" ] = 0,
-			[ "$pp_colour_mulr" ] = 0,
-			[ "$pp_colour_mulg" ] = 0,
-			[ "$pp_colour_mulb" ] = 0
-		}
-		DrawColorModify(colormod)
-	elseif client:Team() == 2 and !client:Alive() then
-		local colormod = {
-			[ "$pp_colour_addr" ] = 0,
-			[ "$pp_colour_addg" ] = 0,
-			[ "$pp_colour_addb" ] = 0,
-			[ "$pp_colour_brightness" ] = 0,
-			[ "$pp_colour_contrast" ] = 0.1,
 			[ "$pp_colour_colour" ] = 0,
 			[ "$pp_colour_mulr" ] = 0,
 			[ "$pp_colour_mulg" ] = 0,
@@ -842,24 +650,18 @@ function GM:RenderScreenspaceEffects()
 	if GAMEMODE.Vars.Jumpscare then
 		DrawMaterialOverlay(GAMEMODE.Vars.Jumpscare, 0)
 	end
-	if client:Team() == 1 and IsValid(GAMEMODE.Vars.Monitor) and (GAMEMODE.Vars.VideoLoss or 0) == GAMEMODE.Vars.lastcam then
+	if IsValid(GAMEMODE.Vars.Monitor) and (GAMEMODE.Vars.VideoLoss or 0) == GAMEMODE.Vars.lastcam then
 		DrawMaterialOverlay(GAMEMODE.Materials_static, 0)
 	end
-	if client:Team() == 1 and IsValid(GAMEMODE.Vars.Monitor) then
+	if IsValid(GAMEMODE.Vars.Monitor) then
 		DrawMaterialOverlay(GAMEMODE.Materials_camstatic, 0)
 	end
-	if client:Team() == 1 and IsValid(GAMEMODE.Vars.Monitor) and client:GetViewEntity().GetCamID and (client:GetViewEntity():GetCamID() != GAMEMODE.Vars.lastcam or (GAMEMODE.Vars.stempo or 0) > CurTime()) then
+	if IsValid(GAMEMODE.Vars.Monitor) and client:GetViewEntity().GetCamID and (client:GetViewEntity():GetCamID() != GAMEMODE.Vars.lastcam or (GAMEMODE.Vars.stempo or 0) > CurTime()) then
 		DrawMaterialOverlay(GAMEMODE.Materials_switch, 0)
 		if client:GetViewEntity():GetCamID() != GAMEMODE.Vars.lastcam then GAMEMODE.Vars.stempo = CurTime() + 0.1 end
 	end
-	if client:Team() == 2 and IsValid(GAMEMODE.Vars.Monitor) then
+	if IsValid(GAMEMODE.Vars.Monitor) then
 		DrawMaterialOverlay(GAMEMODE.Materials_animatronicsvision, 0)
-	end
-	if client:Team() == TEAM_UNASSIGNED and GAMEMODE.Vars.IntroScreen then
-		DrawMaterialOverlay(GAMEMODE.Vars.IntroScreen, 0)
-	end
-	if client:Team() == TEAM_UNASSIGNED and GAMEMODE.Vars.EndScreen then
-		DrawMaterialOverlay(GAMEMODE.Vars.EndScreen, 0)
 	end
 	if GAMEMODE.Vars.b87 then
 		DrawMaterialOverlay(GAMEMODE.Materials_goldenfreddy, 0)
@@ -934,23 +736,6 @@ end
 local undomodelblend = false
 local matWhite = Material("models/debug/debugwhite")
 
-function GM:PrePlayerDraw(ply)
-	if ply:Team() != 1 or ply == LocalPlayer() then return end
-	local radius = 10
-	if radius > 0 then
-		local eyepos = EyePos()
-		local dist = ply:NearestPoint(eyepos):Distance(eyepos)
-		if dist < radius then
-			local blend = math.max((dist / radius) ^ 1.4, 0.04)
-			render.SetBlend(blend)
-			if blend < 0.4 then
-				render.ModelMaterialOverride(matWhite)
-				render.SetColorModulation(0.2, 0.2, 0.2)
-			end
-			undomodelblend = true
-		end
-	end
-end
 
 function GM:PostPlayerDraw(ply)
 	if undomodelblend then
@@ -959,83 +744,6 @@ function GM:PostPlayerDraw(ply)
 		render.SetColorModulation(1, 1, 1)
 		undomodelblend = false
 	end
-end
-
-
-function GM:ShowTeam()
-
-	if !IsValid(self.TeamSelectFrame) then
-
-		-- Simple team selection box
-		self.TeamSelectFrame = vgui.Create("DFrame")
-		self.TeamSelectFrame:SetTitle("Pick Team")
-
-		local AllTeams = team.GetAllTeams()
-		local x = 4
-		local y = 284
-		for ID, TeamInfo in pairs ( AllTeams ) do
-
-			if ID != TEAM_CONNECTING && ID != TEAM_UNASSIGNED then
-
-				local Team = vgui.Create("DButton", self.TeamSelectFrame)
-				function Team.DoClick() self:HideTeam() RunConsoleCommand("changeteam", ID) end
-				Team:SetPos(x, 24)
-				Team:SetSize(256, 256)
-				Team:SetText(TeamInfo.Name)
-				Team:SetTextColor(TeamInfo.Color)
-				Team:SetFont("FNAFGMID")
-
-				if IsValid(LocalPlayer()) && LocalPlayer():Team() == ID then
-					Team:SetDisabled(true)
-					Team:SetTextColor(Color(40, 40, 40))
-					Team.Paint = function(self, w, h)
-						draw.RoundedBox(4, 4, 4, w-8, h-8, Color(0, 0, 0, 150))
-					end
-				else
-					Team:SetTextColor(TeamInfo.Color)
-					Team.Paint = function(self, w, h)
-						draw.RoundedBox(4, 4, 4, w-8, h-8, Color(255, 255, 255, 150))
-					end
-				end
-
-				x = x + 256
-
-			end
-
-		end
-
-		if GAMEMODE.AllowAutoTeam then
-
-			local Team = vgui.Create("DButton", self.TeamSelectFrame)
-			function Team.DoClick() self:HideTeam() RunConsoleCommand("autoteam") end
-			Team:SetPos(4 + x / 3, 280)
-			Team:SetSize(x / 3 - 4, 32)
-			Team:SetText("Auto")
-			Team:SetTextColor(GAMEMODE.Colors_default)
-			Team:SetFont("FNAFGMTXT")
-			Team.Paint = function(self, w, h)
-				draw.RoundedBox(4, 4, 4, w - 8, h - 8, Color(255, 255, 255, 150))
-			end
-
-			y = y + 32
-
-		end
-
-		self.TeamSelectFrame:SetSize(x + 4, y)
-		self.TeamSelectFrame:SetDraggable(true)
-		self.TeamSelectFrame:SetScreenLock(true)
-		self.TeamSelectFrame:SetPaintShadow(true)
-		self.TeamSelectFrame:Center()
-		self.TeamSelectFrame:MakePopup()
-		self.TeamSelectFrame:SetKeyboardInputEnabled(false)
-		self.TeamSelectFrame.Paint = function(self, w, h)
-			draw.RoundedBox(4, 0, 0, w, h, Color(0, 0, 0, 128))
-		end
-
-	else
-		self.TeamSelectFrame:Close()
-	end
-
 end
 
 
@@ -1243,8 +951,6 @@ end
 net.Receive("fnafgmAnimatronicTauntSnd", function(len)
 
 	local ply = LocalPlayer()
-
-	if ply:Team() == TEAM_CONNECTING or ply:Team() == TEAM_UNASSIGNED then return end
 
 	local a = net.ReadInt(5)
 

@@ -11,22 +11,13 @@ DEFINE_BASECLASS("gamemode_base")
 local SandboxClass = baseclass.Get("gamemode_sandbox")
 DeriveGamemode("sandbox")
 
-include("player_class/player_securityguard.lua")
-include("player_class/player_animatronic_controller.lua")
-
 GM.Name 			= "Five Nights at Freddy's"
 GM.ShortName 		= "FNAFGM"
 GM.Author 			= "VictorienXP@Xperidia"
 GM.Website 			= "steamcommunity.com/sharedfiles/filedetails/?id=408243366"
 GM.OfficialVersion 	= 2.15					--This value shouldn't be touched in derived gamemodes.
 GM.Version 			= GM.OfficialVersion	--This can be overrided so derived gamemodes can have their own version.
-GM.TeamBased		= true
-GM.AllowAutoTeam	= true
-if engine.ActiveGamemode() == "fnafgm" then --This is to check if we're in the main FNAFGM or a derived gamemode.
-	GM.Official		= true
-else
-	GM.Official		= false
-end
+GM.Official			= false
 GM.IsFNAFGMDerived	= true
 
 GM.FT		= 1 --GM.FT is the variable for the FNAF style game and as you can see by default it's FNaF 1.
@@ -1151,30 +1142,6 @@ function GM:RefreshBypass()
 end
 
 
-function GM:CreateTeams()
-
-	team.SetUp(1, tostring(GAMEMODE.TranslatedStrings.sg or GAMEMODE.Strings.en.sg), GAMEMODE.Colors_sg)
-	team.SetClass(1, {"player_fnafgmsecurityguard"})
-	if game.GetMap() == "freddysnoevent" or game.GetMap() == "fnaf2noevents" then
-		team.SetSpawnPoint(1, {"info_player_terrorist"})
-	elseif game.GetMap() == "fnaf_freddypizzaevents" then
-		team.SetSpawnPoint(1, {"info_player_deathmatch"})
-	else
-		team.SetSpawnPoint(1, GAMEMODE.Spawns_sg)
-	end
-
-	team.SetUp(2, tostring(GAMEMODE.TranslatedStrings.animatronics or GAMEMODE.Strings.en.animatronics), GAMEMODE.Colors_animatronics)
-	team.SetClass(2, {"player_fnafgm_animatronic_controller"})
-	team.SetSpawnPoint( 2, GAMEMODE.Spawns_animatronics )
-
-	team.SetUp(TEAM_SPECTATOR, tostring(GAMEMODE.TranslatedStrings.spectator or GAMEMODE.Strings.en.spectator), Color(128, 128, 128))
-
-	team.SetUp(TEAM_UNASSIGNED, "Unassigned", Color(128, 128, 128), false)
-	team.SetUp(TEAM_CONNECTING, "Connecting", Color(128, 128, 128), false)
-
-end
-
-
 function GM:CheckCreator(pl) --To easly debug others servers and credit
 	if pl:SteamID() == "STEAM_0:1:18280147" then
 		return true
@@ -1244,30 +1211,6 @@ function GM:CheckPlayerSecurityRoom(ply)
 end
 
 
-function GM:GrabEarAnimation(ply)
-
-	if ply:Team() == 2 then return end
-
-	ply.ChatGestureWeight = ply.ChatGestureWeight or 0
-
-	if ply:IsPlayingTaunt() then return end
-
-	if ply:IsTyping() then
-		ply.ChatGestureWeight = math.Approach( ply.ChatGestureWeight, 1, FrameTime() * 5)
-	else
-		ply.ChatGestureWeight = math.Approach( ply.ChatGestureWeight, 0, FrameTime() * 5)
-	end
-
-	if ply.ChatGestureWeight > 0 then
-
-		ply:AnimRestartGesture(GESTURE_SLOT_VCD, ACT_GMOD_IN_CHAT, true)
-		ply:AnimSetGestureWeight(GESTURE_SLOT_VCD, ply.ChatGestureWeight)
-
-	end
-
-end
-
-
 function GM:Move(ply, mv)
 
 	if CLIENT and GAMEMODE.Vars.fnafviewactive then return true end
@@ -1299,7 +1242,7 @@ function GM:GoFNaFView(ply,auto)
 
 	GAMEMODE.Vars.fnafview = true
 
-	if SERVER and GAMEMODE.FNaFView[game.GetMap()] and ply:Team() == 1 and ply:Alive() then
+	if SERVER and GAMEMODE.FNaFView[game.GetMap()] and ply:Alive() then
 		if !auto or (ply:GetInfoNum("fnafgm_cl_autofnafview", 1) == 1 and !fnafgm_sandbox_enable:GetBool()) then
 			ply:SendLua([[GAMEMODE:GoFNaFView()]])
 		end

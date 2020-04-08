@@ -148,9 +148,7 @@ function ENT:RunBehaviour()
 					self:SetCycle(0)
 					self:SetPlaybackRate(1)
 					for k, v in pairs(player.GetAll()) do
-						if v:Team() != TEAM_CONNECTING and v:Team() != TEAM_UNASSIGNED then
-							v:SendLua([[LocalPlayer():EmitSound("fnafgm_foxystep")]])
-						end
+						v:SendLua([[LocalPlayer():EmitSound("fnafgm_foxystep")]])
 					end
 					self.loco:SetDesiredSpeed(600)
 					self.FoxyMoveState = self:MoveToPos(Vector(-140, -1164, 64), { maxage = 3.5 })
@@ -266,7 +264,7 @@ function ENT:Think()
 
 		for _, ply in pairs(player.GetAll()) do
 
-			if (ply:EyePos():Distance(self:EyePos()) <= 300) and ply:Team() == 1 then
+			if (ply:EyePos():Distance(self:EyePos()) <= 300) then
 
 				self:SetEyeTarget(ply:EyePos())
 				break
@@ -281,7 +279,7 @@ function ENT:Think()
 
 		for k, v in pairs(ents.FindInSphere(self:GetPos(), 24)) do
 
-			if IsValid(v) and v:IsPlayer() and v:Alive() and v:Team() == 1 then
+			if IsValid(v) and v:IsPlayer() and v:Alive() then
 
 				local attacker = self
 
@@ -364,7 +362,7 @@ function ENT:GoJumpscare()
 
 			local sgdead = true
 			for k, v in pairs(player.GetAll()) do
-				if v:Alive() and v:Team() == 1 then
+				if v:Alive() then
 					sgdead = false
 					break
 				end
@@ -402,7 +400,7 @@ function ENT:Jumpscare()
 
 				for k, v in pairs(player.GetAll()) do
 
-					if v:Team() == 1 and v:Alive() and v.IsOnSecurityRoom then
+					if v:Alive() and v.IsOnSecurityRoom then
 
 						v:SendLua('GAMEMODE:JumpscareOverlay("fnafgm/screamers/freddysnoevent_0")')
 						v:SendLua([[LocalPlayer():EmitSound("fnafgm_scream")]])
@@ -418,7 +416,7 @@ function ENT:Jumpscare()
 
 				for k, v in pairs(player.GetAll()) do
 
-					if v:Team() == 1 and v:Alive() and v.IsOnSecurityRoom then
+					if v:Alive() and v.IsOnSecurityRoom then
 
 						v:SendLua('GAMEMODE:JumpscareOverlay("fnafgm/screamers/freddysnoevent_1")')
 						v:SendLua([[LocalPlayer():EmitSound("fnafgm_scream")]])
@@ -434,7 +432,7 @@ function ENT:Jumpscare()
 
 				for k, v in pairs(player.GetAll()) do
 
-					if v:Team() == 1 and v:Alive() and v.IsOnSecurityRoom then
+					if v:Alive() and v.IsOnSecurityRoom then
 
 						v:SendLua('GAMEMODE:JumpscareOverlay("fnafgm/screamers/freddysnoevent_2")')
 						v:SendLua([[LocalPlayer():EmitSound("fnafgm_scream")]])
@@ -450,7 +448,7 @@ function ENT:Jumpscare()
 
 				for k, v in pairs(player.GetAll()) do
 
-					if v:Team() == 1 and v:Alive() and v.IsOnSecurityRoom then
+					if v:Alive() and v.IsOnSecurityRoom then
 
 						v:SendLua([[LocalPlayer():EmitSound("fnafgm_scream")]])
 						v:TakeDamage(100, self)
@@ -465,11 +463,7 @@ function ENT:Jumpscare()
 
 				for k, v in pairs(player.GetAll()) do
 
-					if v:Team() != TEAM_CONNECTING and v:Team() != TEAM_UNASSIGNED then
-
-						v:SendLua([[LocalPlayer():EmitSound("fnafgm_foxyknock")]])
-
-					end
+					v:SendLua([[LocalPlayer():EmitSound("fnafgm_foxyknock")]])
 
 				end
 

@@ -135,7 +135,7 @@ function GM:Monitor(control)
 
 			else
 
-				if !LocalPlayer():Alive() or LocalPlayer():Team() != 2 or GAMEMODE.Vars.gameend then
+				if !LocalPlayer():Alive() or GAMEMODE.Vars.gameend then
 					GAMEMODE.Vars.Monitor:Close()
 				end
 
