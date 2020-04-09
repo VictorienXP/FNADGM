@@ -605,7 +605,7 @@ hook.Add("HUDPaint", "fnafgmInfo", function()
 			GAMEMODE.Vars.seasonaltext = ""
 		end
 
-		draw.DrawText((GAMEMODE.ShortName or "?") .. " V" .. (GAMEMODE.Version or "?") .. (GAMEMODE.Vars.modetext or "") .. (GAMEMODE.Vars.seasonaltext or ""), "Trebuchet24", ScrW() - 8, ScrH() - 28, Color(100, 100, 100, 255), TEXT_ALIGN_RIGHT)
+		draw.DrawText((GAMEMODE.ShortName or "?") .. " " .. (GAMEMODE.Version or "?") .. (GAMEMODE.Vars.modetext or "") .. (GAMEMODE.Vars.seasonaltext or ""), "Trebuchet24", ScrW() - 8, ScrH() - 28, Color(100, 100, 100, 255), TEXT_ALIGN_RIGHT)
 
 
 	end

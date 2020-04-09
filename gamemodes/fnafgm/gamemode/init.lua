@@ -2033,7 +2033,7 @@ concommand.Add("fnafgm_debug_info", function(ply)
 		fnafgm_forcesavingloading, fnafgm_enablecreatorsbypass, fnafgm_enabledevmode,
 		fnafgm_sgvsa, fnafgm_autorestartmap}
 
-	appendtxt(GAMEMODE.Name .. " Gamemode V" .. tostring(GAMEMODE.Version or "error") .. " by " .. GAMEMODE.Author)
+	appendtxt(GAMEMODE.Name .. " Gamemode " .. tostring(GAMEMODE.Version or "error") .. " by " .. GAMEMODE.Author)
 	if !GAMEMODE.Official then appendtxt("Derived from Five Nights at Freddy's Gamemode V" .. tostring(GAMEMODE.OfficialVersion or "error") .. " by Xperidia") end
 	linebreak()
 	appendtxtl("Is FNAFGM mounted from WorkShop? " .. tostring(GAMEMODE.Vars.fnafgmWorkShop))
@@ -2093,11 +2093,11 @@ end
 
 concommand.Add("fnafgm_version", function(ply)
 	if IsValid(ply) then
-		ply:PrintMessage(HUD_PRINTCONSOLE, GAMEMODE.Name .. " Gamemode V" .. tostring(GAMEMODE.Version or "error") .. " by " .. GAMEMODE.Author)
-		if !GAMEMODE.Official then ply:PrintMessage(HUD_PRINTCONSOLE, "Derived from Five Nights at Freddy's Gamemode V" .. tostring(GAMEMODE.OfficialVersion or "error") .. " by VictorienXP@Xperidia") end
+		ply:PrintMessage(HUD_PRINTCONSOLE, GAMEMODE.Name .. " Gamemode " .. tostring(GAMEMODE.Version or "error") .. " by " .. GAMEMODE.Author)
+		if !GAMEMODE.Official then ply:PrintMessage(HUD_PRINTCONSOLE, "Derived from Five Nights at Freddy's Gamemode " .. tostring(GAMEMODE.OfficialVersion or "error") .. " by VictorienXP@Xperidia") end
 	else
-		print(GAMEMODE.Name .. " Gamemode V" .. tostring(GAMEMODE.Version or "error") .. " by " .. GAMEMODE.Author)
-		if !GAMEMODE.Official then print("Derived from Five Nights at Freddy's Gamemode V" .. tostring(GAMEMODE.OfficialVersion or "error") .. " by VictorienXP@Xperidia") end
+		print(GAMEMODE.Name .. " Gamemode " .. tostring(GAMEMODE.Version or "error") .. " by " .. GAMEMODE.Author)
+		if !GAMEMODE.Official then print("Derived from Five Nights at Freddy's Gamemode " .. tostring(GAMEMODE.OfficialVersion or "error") .. " by VictorienXP@Xperidia") end
 	end
 end)
 
