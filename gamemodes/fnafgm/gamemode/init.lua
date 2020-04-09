@@ -1893,7 +1893,7 @@ function fnafgmTimeThink()
 
 					v:ScreenFade(16, color_black, 0, 0)
 
-					v:Spawn()
+					--v:Spawn()
 
 				end
 
