@@ -1,7 +1,7 @@
 --[[---------------------------------------------------------
 
 	Five Nights at Pinkie's Gamemode for Garry's Mod
-			by VictorienXP@Xperidia (2015)
+			by VictorienXP@Xperidia (2015-2020)
 
 -----------------------------------------------------------]]
 
