@@ -145,21 +145,6 @@ function GM:PlayerSpawn(ply)
 
 	end
 
-	local userid = ply:UserID()
-
-	if GAMEMODE.Vars.startday and !GAMEMODE.Vars.tempostart and !GAMEMODE.Vars.nightpassed and !GAMEMODE.Vars.gameend and GAMEMODE.FNaFView[game.GetMap()] then
-		if GAMEMODE.FNaFView[game.GetMap()][1] then ply:SetPos(GAMEMODE.FNaFView[game.GetMap()][1]) end
-		if GAMEMODE.FNaFView[game.GetMap()][2] then ply:SetEyeAngles(GAMEMODE.FNaFView[game.GetMap()][2]) end
-		timer.Create("fnafgmTempoFNaFView" .. userid, 0.1, 1, function()
-			if IsValid(ply) then
-				GAMEMODE:GoFNaFView(ply, true)
-				if GAMEMODE.FNaFView[game.GetMap()][1] then ply:SetPos(GAMEMODE.FNaFView[game.GetMap()][1]) end
-				if GAMEMODE.FNaFView[game.GetMap()][2] then ply:SetEyeAngles(GAMEMODE.FNaFView[game.GetMap()][2]) end
-			end
-			timer.Remove("fnafgmTempoFNaFView" .. userid)
-		end)
-	end
-
 end
 
 
@@ -1971,7 +1956,7 @@ function fnafgmTimeThink()
 
 				v:ScreenFade(16, color_black, 0, 0)
 
-				v:Spawn()
+				--v:Spawn()
 
 			end
 
