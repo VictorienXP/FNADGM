@@ -1110,7 +1110,7 @@ function fnafgmAutoCleanUp()
 			if !GAMEMODE:RestartMapIfWeShould() then
 				GAMEMODE.Vars.active = false
 				fnafgmResetGame()
-				fnafgmMapOverrides()
+				--fnafgmMapOverrides()
 				GAMEMODE:LoadProgress()
 			end
 		end
@@ -1119,34 +1119,47 @@ function fnafgmAutoCleanUp()
 
 end
 
+function GM:PreCleanupMap()
+
+	timer.Remove("fnafgmEndCall")
+	timer.Remove("fnafgmTimeThink")
+	timer.Remove("fnafgmPreRestartNight")
+	timer.Remove("fnafgmRestartNight")
+	timer.Remove("fnafgmNightPassed")
+	timer.Remove("fnafgmPowerOff1")
+	timer.Remove("fnafgmPowerOff2")
+	timer.Remove("fnafgmPowerOff3")
+	table.Empty(GAMEMODE.Vars.LightUse)
+	table.Empty(GAMEMODE.Vars.DoorClosed)
+	table.Empty(GAMEMODE.Vars.tabused)
+	table.Empty(GAMEMODE.Vars.usingsafedoor)
+
+end
+
+function GM:PostCleanupMap()
+	GAMEMODE.Vars.mapoverrideok = false
+	fnafgmMapOverrides()
+	GAMEMODE.Vars.night = GAMEMODE.Vars.night - 1
+	GAMEMODE.Vars.time = GAMEMODE.TimeBase
+	GAMEMODE.Vars.AMPM = GAMEMODE.AMPM
+	GAMEMODE.Vars.poweroff = false
+	GAMEMODE.Vars.powerchecktime = nil
+	GAMEMODE.Vars.oldpowerdrain = nil
+	GAMEMODE.Vars.startday = false
+	GAMEMODE.Vars.tempostart = false
+	GAMEMODE.Vars.mute = true
+	GAMEMODE.Vars.foxyknockdoorpena = 2
+	GAMEMODE.Vars.addfoxyknockdoorpena = 4
+	fnafgmVarsUpdate()
+end
+
 function fnafgmRestartNight()
 
 	if GAMEMODE.Vars.iniok and GAMEMODE.Vars.mapoverrideok and GAMEMODE.Vars.startday and GAMEMODE.Vars.active then
 
 		game.CleanUpMap()
-		timer.Remove("fnafgmTimeThink")
-		timer.Remove("fnafgmPowerOff1")
-		timer.Remove("fnafgmPowerOff2")
-		timer.Remove("fnafgmPowerOff3")
-		GAMEMODE.Vars.night = GAMEMODE.Vars.night - 1
-		GAMEMODE.Vars.time = GAMEMODE.TimeBase
-		GAMEMODE.Vars.AMPM = GAMEMODE.AMPM
-		GAMEMODE.Vars.poweroff = false
-		GAMEMODE.Vars.powerchecktime = nil
-		GAMEMODE.Vars.oldpowerdrain = nil
-		table.Empty(GAMEMODE.Vars.tabused)
-		table.Empty(GAMEMODE.Vars.usingsafedoor)
-		GAMEMODE.Vars.startday = false
-		GAMEMODE.Vars.tempostart = false
 		GAMEMODE.Vars.nightpassed = false
-		GAMEMODE.Vars.mapoverrideok = false
-		table.Empty(GAMEMODE.Vars.LightUse)
-		table.Empty(GAMEMODE.Vars.DoorClosed)
-		GAMEMODE.Vars.mute = true
-		timer.Remove("fnafgmEndCall")
-		GAMEMODE.Vars.foxyknockdoorpena = 2
-		GAMEMODE.Vars.addfoxyknockdoorpena = 4
-		fnafgmMapOverrides()
+		--fnafgmMapOverrides()
 		fnafgmVarsUpdate()
 		for k, v in pairs(player.GetAll()) do
 			if game.SinglePlayer() then v:ConCommand("stopsound") else v:SendLua([[RunConsoleCommand("stopsound")]]) end --Stop sound
@@ -1176,24 +1189,12 @@ function fnafgmResetGame()
 	GAMEMODE.Vars.poweroff = false
 	GAMEMODE.Vars.powerchecktime = nil
 	GAMEMODE.Vars.oldpowerdrain = nil
-	table.Empty(GAMEMODE.Vars.LightUse)
-	table.Empty(GAMEMODE.Vars.DoorClosed)
-	table.Empty(GAMEMODE.Vars.tabused)
-	table.Empty(GAMEMODE.Vars.usingsafedoor)
 	GAMEMODE.Vars.night = GAMEMODE.NightBase
 	GAMEMODE.Vars.norespawn = false
 	GAMEMODE.Vars.nightpassed = false
 	GAMEMODE.Vars.gameend = false
 	GAMEMODE.Vars.checkRestartNight = false
 	GAMEMODE.Vars.mute = true
-	timer.Remove("fnafgmEndCall")
-	timer.Remove("fnafgmTimeThink")
-	timer.Remove("fnafgmPreRestartNight")
-	timer.Remove("fnafgmRestartNight")
-	timer.Remove("fnafgmNightPassed")
-	timer.Remove("fnafgmPowerOff1")
-	timer.Remove("fnafgmPowerOff2")
-	timer.Remove("fnafgmPowerOff3")
 	GAMEMODE.Vars.foxyknockdoorpena = 2
 	GAMEMODE.Vars.addfoxyknockdoorpena = 4
 	fnafgmVarsUpdate()
@@ -1831,9 +1832,8 @@ function fnafgmTimeThink()
 				v:SetViewEntity(v)
 			end
 			v:ConCommand("pp_mat_overlay ''")
-			v:AddFrags(1)
 		end
-		game.CleanUpMap()
+		--game.CleanUpMap()
 
 		if GAMEMODE.Vars.night > GAMEMODE.NightEnd then
 			GAMEMODE.Vars.overfive = true
@@ -1860,7 +1860,7 @@ function fnafgmTimeThink()
 
 			fnafgmResetGame()
 			if !game.IsDedicated() then GAMEMODE.Vars.night = GAMEMODE.NightEnd end
-			fnafgmMapOverrides()
+			--fnafgmMapOverrides()
 
 			if file.Exists("materials/" .. string.lower(GAMEMODE.ShortName) .. "/endscreen/" .. game.GetMap() .. "_en" .. ".vmt", "GAME") or file.Exists("materials/fnafgm/endscreen/" .. game.GetMap() .. "_en" .. ".vmt", "GAME") then
 
@@ -1914,24 +1914,15 @@ function fnafgmTimeThink()
 	elseif GAMEMODE.Vars.time == GAMEMODE.TimeEnd and GAMEMODE.Vars.AMPM == GAMEMODE.AMPM_End and !fnafgm_timethink_endlesstime:GetBool() then
 
 		GAMEMODE:Log("Night " .. GAMEMODE.Vars.night .. " passed (Power left: " .. GAMEMODE.Vars.power .. "%)")
+		--game.CleanUpMap()
 		GAMEMODE.Vars.startday = false
 		GAMEMODE.Vars.nightpassed = true
-		timer.Remove("fnafgmTimeThink")
-		timer.Remove("fnafgmPowerOff1")
-		timer.Remove("fnafgmPowerOff2")
-		timer.Remove("fnafgmPowerOff3")
 		GAMEMODE.Vars.powerchecktime = nil
 		GAMEMODE.Vars.oldpowerdrain = nil
 		GAMEMODE.Vars.poweroff = false
 		GAMEMODE.Vars.foxyknockdoorpena = 2
 		GAMEMODE.Vars.addfoxyknockdoorpena = 4
-		game.CleanUpMap()
-		table.Empty(GAMEMODE.Vars.LightUse)
-		table.Empty(GAMEMODE.Vars.DoorClosed)
-		GAMEMODE.Vars.mapoverrideok = false
-		fnafgmMapOverrides()
-		table.Empty(GAMEMODE.Vars.tabused)
-		table.Empty(GAMEMODE.Vars.usingsafedoor)
+		--fnafgmMapOverrides()
 
 		for k, v in pairs(player.GetAll()) do
 			if game.SinglePlayer() then v:ConCommand("stopsound") else v:SendLua([[RunConsoleCommand("stopsound")]]) end --Stop sound
@@ -1951,6 +1942,9 @@ function fnafgmTimeThink()
 		GAMEMODE:SaveProgress()
 
 		timer.Create("fnafgmNightPassed", 11, 1, function()
+
+			game.CleanUpMap()
+			GAMEMODE.Vars.night = GAMEMODE.Vars.night + 1
 
 			for k, v in pairs(player.GetAll()) do
 
@@ -2250,7 +2244,7 @@ concommand.Add("fnafgm_debug_reset", function(ply)
 
 	if (IsValid(ply) and fnafgmPlayerCanByPass(ply,"debug")) or !IsValid(ply) then
 		fnafgmResetGame()
-		fnafgmMapOverrides()
+		--fnafgmMapOverrides()
 		fnafgmVarsUpdate()
 		net.Start("fnafgmNotif")
 			net.WriteString("gamebeenreset")
