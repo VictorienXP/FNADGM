@@ -1,0 +1,5 @@
+"fnapgm"
+{
+	"base"		"fnafgm"
+	"title"		"Five Nights at Pinkie's"
+}
