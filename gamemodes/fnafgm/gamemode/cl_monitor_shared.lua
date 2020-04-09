@@ -1,7 +1,7 @@
 --[[---------------------------------------------------------
 
 	Five Nights at Freddy's Gamemode for Garry's Mod
-			by VictorienXP@Xperidia (2015)
+			by VictorienXP@Xperidia (2015-2020)
 
 	"Five Nights at Freddy's" is a game by Scott Cawthon.
 
