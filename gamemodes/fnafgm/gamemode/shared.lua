@@ -337,6 +337,10 @@ function GM:LoadLanguage(lang)
 		GAMEMODE:Log("'" .. lang .. "' is not supported! Default strings loaded!")
 	end
 
+	if CLIENT then
+		language.Add("fnafgm_animatronic", tostring(GAMEMODE.TranslatedStrings.animatronic or GAMEMODE.Strings.en.animatronic))
+	end
+
 end
 
 GM.Spawns_sg = { "info_player_start", "info_player_terrorist" }
@@ -1324,5 +1328,66 @@ function GM:ErrorLog(str, tn)
 	if tn then name = "FNAFGM" end
 
 	ErrorNoHalt("[" .. name .. "] " .. (str or "This was an error message, but something went wrong") .. "\n")
+
+end
+
+function GM:CanTool(ply, trace, mode)
+
+	if trace.Entity:IsValid() and trace.Entity:GetClass() == "func_door" then
+
+		return false
+
+	elseif trace.Entity:IsValid() and trace.Entity:GetClass() == "func_button" then
+
+		return false
+
+	end
+
+	if !fnafgm_sandbox_enable:GetBool() and !ply:IsSuperAdmin() then
+
+		return false
+
+	end
+
+	return SandboxClass.CanTool(self, ply, trace, mode)
+
+end
+
+function GM:CanProperty(pl, property, ent)
+
+	local classname = ent:GetClass()
+
+	if classname == "func_door" then return false end
+	if classname == "func_button" then return false end
+
+	if !fnafgm_sandbox_enable:GetBool() and !ply:IsSuperAdmin() then
+
+		return false
+
+	end
+
+	return SandboxClass.CanProperty(self, pl, property, ent)
+
+end
+
+function GM:CanDrive(pl, ent)
+
+	local classname = ent:GetClass()
+
+	if classname == "func_door" then return false end
+	if classname == "func_button" then return false end
+
+	return SandboxClass.CanDrive(self, pl, ent)
+
+end
+
+function GM:PhysgunPickup(ply, ent)
+
+	local EntClass = ent:GetClass()
+
+	if EntClass == "func_door" then return false end
+	if EntClass == "func_button" then return false end
+
+	return SandboxClass.PhysgunPickup(self, ply, ent)
 
 end
