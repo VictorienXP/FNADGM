@@ -280,51 +280,6 @@ function GM:HUDAmmoPickedUp(itemname, amount)
 end
 
 
-function GM:HUDDrawTargetID()
-
-	local tr = util.GetPlayerTrace(LocalPlayer())
-	local trace = util.TraceLine(tr)
-	if !trace.Hit then return end
-	if !trace.HitNonWorld then return end
-
-	local text = "ERROR"
-	local font = "FNAFGMID"
-
-	if !GAMEMODE.Vars.fnafviewactive and !IsValid(GAMEMODE.Vars.Monitor)
-	and (trace.Entity:IsPlayer() and (LocalPlayer():Team() == trace.Entity:Team() or LocalPlayer():Team() == 2 or LocalPlayer():Team() == TEAM_SPECTATOR)) then
-		text = trace.Entity:Nick()
-	elseif debugmode then
-		text = trace.Entity:GetClass()
-	else
-		return
-	end
-
-	surface.SetFont(font)
-	local w, h = surface.GetTextSize(text)
-
-	local MouseX, MouseY = gui.MousePos()
-
-	if MouseX == 0 && MouseY == 0 then
-
-		MouseX = ScrW() / 2
-		MouseY = ScrH() / 2
-
-	end
-
-	local x = MouseX
-	local y = MouseY
-
-	x = x - w / 2
-	y = y + 30
-
-	-- The fonts internal drop shadow looks lousy with AA on
-	draw.SimpleText(text, font, x + 1, y + 1, Color(0,0,0,120))
-	draw.SimpleText(text, font, x + 2, y + 2, Color(0,0,0,50))
-	draw.SimpleText(text, font, x, y, self:GetTeamColor(trace.Entity))
-
-end
-
-
 local fnafgmHUDhide = {
 	CHudHealth			= true,
 	CHudBattery			= true,
