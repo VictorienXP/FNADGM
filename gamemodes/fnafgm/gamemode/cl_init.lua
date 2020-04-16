@@ -432,9 +432,9 @@ function GM:HUDPaint()
 			if time >= 0 then
 				if time <= 0 then time = 0 end
 				draw.DrawText((GAMEMODE.TranslatedStrings.nightwillstart or GAMEMODE.Strings.en.nightwillstart) .. " " .. time .. "s", "FNAFGMTIME", ScrW() / 2, ScrH() * 0.2, GAMEMODE.Colors_default, TEXT_ALIGN_CENTER)
-				draw.DrawText((GAMEMODE.TranslatedStrings.tonight or GAMEMODE.Strings.en.tonight) .. " " .. (GAMEMODE.Vars.night or 0) + 1, "FNAFGMNIGHT", ScrW() / 2, ScrH() * 0.25, GAMEMODE.Colors_default, TEXT_ALIGN_CENTER)
+				draw.DrawText((GAMEMODE.TranslatedStrings.night or GAMEMODE.Strings.en.night) .. " " .. (GAMEMODE.Vars.night or 0) + 1, "FNAFGMNIGHT", ScrW() / 2, ScrH() * 0.25, GAMEMODE.Colors_default, TEXT_ALIGN_CENTER)
 			else
-				draw.DrawText((GAMEMODE.TranslatedStrings.tonight or GAMEMODE.Strings.en.tonight) .. " " .. (GAMEMODE.Vars.night or 0) + 1, "FNAFGMNIGHT", ScrW() - 64, H + 64, GAMEMODE.Colors_default, TEXT_ALIGN_RIGHT)
+				draw.DrawText((GAMEMODE.TranslatedStrings.night or GAMEMODE.Strings.en.night) .. " " .. (GAMEMODE.Vars.night or 0) + 1, "FNAFGMNIGHT", ScrW() - 42, H, GAMEMODE.Colors_default, TEXT_ALIGN_RIGHT)
 			end
 
 		elseif !GAMEMODE.Vars.tempostart then
@@ -539,19 +539,19 @@ function GM:HUDPaint()
 				draw.DrawText(time .. " " .. AMPM, "FNAFGMTIME", ScrW() - 52, H, GAMEMODE.Colors_default, TEXT_ALIGN_RIGHT)
 				draw.DrawText(nighttxt .. " " .. night, "FNAFGMNIGHT", ScrW() - 64, H + 64, GAMEMODE.Colors_default, TEXT_ALIGN_RIGHT)
 
-				if power != 0 then draw.DrawText((GAMEMODE.TranslatedStrings.powerleft or GAMEMODE.Strings.en.powerleft) .. power .. "%", "FNAFGMNIGHT", 64, powerhs - 64, GAMEMODE.Colors_default, TEXT_ALIGN_LEFT) end
+				if power != 0 then draw.DrawText((GAMEMODE.TranslatedStrings.powerleft or GAMEMODE.Strings.en.powerleft) .. power .. "%", "FNAFGMNIGHT", ScrW() * .015, powerhs - 24, GAMEMODE.Colors_default, TEXT_ALIGN_LEFT) end
 
 				if powerusage == 0 or power == 0 then
 
 				elseif powerusage > 0 and powerusage < 7 then
 
-					draw.DrawText(GAMEMODE.TranslatedStrings.usage or GAMEMODE.Strings.en.usage, "FNAFGMNIGHT", 64, powerhs - 24, GAMEMODE.Colors_default, TEXT_ALIGN_LEFT)
+					draw.DrawText(GAMEMODE.TranslatedStrings.usage or GAMEMODE.Strings.en.usage, "FNAFGMNIGHT", ScrW() * .015, powerhs - 64, GAMEMODE.Colors_default, TEXT_ALIGN_LEFT)
 
 					local usagetexture = {
 						texture	= surface.GetTextureID(GAMEMODE.Materials_usage .. powerusage),
 						color	= Color(255, 255, 255, 255),
-						x 		= 180,
-						y 		= powerhs - 30,
+						x 		= ScrW() * .015 + 116,
+						y 		= powerhs - 70,
 						w 		= 128,
 						h 		= 64
 					}
