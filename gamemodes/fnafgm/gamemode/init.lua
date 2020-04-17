@@ -1139,7 +1139,9 @@ end
 function GM:PostCleanupMap()
 	GAMEMODE.Vars.mapoverrideok = false
 	fnafgmMapOverrides()
-	GAMEMODE.Vars.night = GAMEMODE.Vars.night - 1
+	if GAMEMODE.Vars.startday then
+		GAMEMODE.Vars.night = GAMEMODE.Vars.night - 1
+	end
 	GAMEMODE.Vars.time = GAMEMODE.TimeBase
 	GAMEMODE.Vars.AMPM = GAMEMODE.AMPM
 	GAMEMODE.Vars.poweroff = false
@@ -1944,7 +1946,7 @@ function fnafgmTimeThink()
 		timer.Create("fnafgmNightPassed", 11, 1, function()
 
 			game.CleanUpMap()
-			GAMEMODE.Vars.night = GAMEMODE.Vars.night + 1
+			--GAMEMODE.Vars.night = GAMEMODE.Vars.night + 1
 
 			for k, v in pairs(player.GetAll()) do
 
