@@ -12,7 +12,7 @@
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("cl_fnafview.lua")
 AddCSLuaFile("cl_menu.lua")
-AddCSLuaFile("cl_secret.lua")
+AddCSLuaFile("cl_keypad.lua")
 AddCSLuaFile("cl_monitor_shared.lua")
 
 include("shared.lua")
@@ -55,6 +55,8 @@ util.AddNetworkString("fnafgmAnimatronicTaunt")
 util.AddNetworkString("fnafgmAnimatronicTauntSnd")
 util.AddNetworkString("fnafgmCamLight")
 util.AddNetworkString("fnafgmStart")
+util.AddNetworkString("fnafgm_keypad")
+util.AddNetworkString("fnafgm_password_input")
 
 
 function GM:PlayerNoClip(pl, on)
@@ -3166,3 +3168,12 @@ function GM:PlayerButtonUp(ply, btn)
 	end
 
 end
+
+net.Receive("fnafgm_password_input", function(len, ply)
+
+	local password = net.ReadString()
+	local ent = net.ReadEntity()
+
+	ent:PasswordInput(password, ply)
+
+end)
