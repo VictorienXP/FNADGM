@@ -37,11 +37,11 @@ function ENT:AcceptInput(name, activator, caller, data)
 
 	if name == "Enable" then
 
-		self.do_not_draw = false
+		self:SetShouldNotDraw(false)
 
 	elseif name == "Disable" then
 
-		self.do_not_draw = true
+		self:SetShouldNotDraw(true)
 
 	end
 
@@ -57,16 +57,18 @@ function ENT:KeyValue(k, v)
 
 	elseif k == "StartDisabled" then
 
-		self.do_not_draw = tobool(v)
+		self:SetShouldNotDraw(tobool(v))
 
 	end
 
 end
 
-function ENT:Draw()
+function ENT:Draw(flags)
 
-	if not self.do_not_draw then
+	if not self:GetShouldNotDraw() then
+
 		self:DrawModel()
+
 	end
 
 end
@@ -79,13 +81,13 @@ end
 
 function ENT:Think()
 
-	if self.do_not_draw then return end
+	if self:GetShouldNotDraw() then return end
 
 	local last_eye_target
 
 	for _, cam in pairs(ents.FindByClass("fnafgm_camera")) do
 
-		if !last_eye_target or cam:GetPos():Distance(self:GetPos()) < last_eye_target:Distance(self:GetPos()) then
+		if not last_eye_target or cam:GetPos():Distance(self:GetPos()) < last_eye_target:Distance(self:GetPos()) then
 
 			last_eye_target = cam:GetPos()
 
@@ -101,14 +103,20 @@ function ENT:Think()
 
 end
 
+function ENT:SetupDataTables()
+
+	self:NetworkVar("Bool", 0, "ShouldNotDraw", {KeyName = "StartDisabled"})
+
+end
+
 function ENT:CanTool(ply, trace, mode)
 
-	return !GAMEMODE.IsFNAFGMDerived
+	return not GAMEMODE.IsFNAFGMDerived
 
 end
 
 function ENT:CanProperty(ply, property)
 
-	return !GAMEMODE.IsFNAFGMDerived
+	return not GAMEMODE.IsFNAFGMDerived
 
 end
