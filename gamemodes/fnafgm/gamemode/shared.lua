@@ -15,7 +15,7 @@ GM.Name 			= "Five Nights at Freddy's"
 GM.ShortName 		= "FNAFGM"
 GM.Author 			= "VictorienXP@Xperidia"
 GM.Website 			= "steamcommunity.com/sharedfiles/filedetails/?id=408243366"
-GM.OfficialVersion 	= "SuperDean-ce9d5e2"
+GM.OfficialVersion 	= "SuperDean-a1acf19"
 GM.Version 			= GM.OfficialVersion
 GM.Official			= false
 GM.IsFNAFGMDerived	= true
