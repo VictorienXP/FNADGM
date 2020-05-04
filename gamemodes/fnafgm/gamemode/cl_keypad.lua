@@ -67,8 +67,22 @@ local passwords = {
 		msg = "( *▽*)y─┛",
 	},
 
+	["42"] = {
+		msg = "(*^▽^*)",
+	},
+
 	["69420"] = {
 		msg = "~\\(≧▽≦)/~",
+	},
+
+	["1987"] = {
+		func = function()
+			if not fnafgm_sandbox_enable:GetBool() then
+				GAMEMODE.Vars.b87 = true
+			end
+			GAMEMODE.KeyPadFrame:Close()
+			return ""
+		end
 	},
 
 }
