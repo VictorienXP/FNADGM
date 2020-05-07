@@ -22,7 +22,7 @@ function ENT:Initialize()
 
 	self:SetHealth(2147483647)
 
-	self:SetFlexWeight(self:GetFlexIDByName("r_sad"), 1)
+	self:SetFlexWeight(self:GetFlexIDByName("eye_closer_right"), 1)
 	self:SetFlexWeight(self:GetFlexIDByName("eye_closer_left"), 1)
 	self:SetFlexWeight(self:GetFlexIDByName("jaw_open"), .43)
 	self:SetFlexWeight(self:GetFlexIDByName("mouth_S"), 1)
