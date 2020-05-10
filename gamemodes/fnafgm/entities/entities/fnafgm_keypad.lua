@@ -20,6 +20,8 @@ ENT.PhysgunDisabled = true
 local ent_model = Model("models/props_lab/keypad.mdl")
 local ok_sound = Sound("buttons/button9.wav")
 local error_sound = Sound("buttons/button10.wav")
+local disabled_sound = Sound("buttons/button16.wav")
+local use_sound = Sound("buttons/combine_button7.wav")
 
 function ENT:Initialize()
 
@@ -27,16 +29,25 @@ function ENT:Initialize()
 
 	self:SetSolid(SOLID_BBOX)
 
+	if SERVER then
+		self:SetUseType(SIMPLE_USE)
+	end
+
 end
 
 function ENT:Use(activator, caller, useType, value)
 
 	self:TriggerOutput("OnPressed", activator or caller)
 
+	if self._disabled then
+		self:EmitSound(disabled_sound)
+		return
+	end
+
 	local ply
-	if (IsValid(activator) and activator:IsPlayer()) then
+	if IsValid(activator) and activator:IsPlayer() then
 		ply = activator
-	elseif (IsValid(caller) and caller:IsPlayer()) then
+	elseif IsValid(caller) and caller:IsPlayer() then
 		ply = caller
 	end
 
@@ -44,23 +55,69 @@ function ENT:Use(activator, caller, useType, value)
 		net.Start("fnafgm_keypad")
 			net.WriteEntity(self)
 		net.Send(ply)
+		self:EmitSound(use_sound)
 	end
 
 end
 
 function ENT:PasswordInput(password, ply)
 
-	if password == self:GetPassword() then
-		self:TriggerOutput("OnCorrectPassword", ply)
-		self:SetSkin(1)
-		timer.Create("fnafgm_keypad_skin_reset_" .. self:EntIndex(), 1.6, 1, function() self:SetSkin(0) end)
-		self:EmitSound(ok_sound, 120)
-	else
-		self:TriggerOutput("OnBadPassword", ply)
-		self:SetSkin(2)
-		timer.Create("fnafgm_keypad_skin_reset_" .. self:EntIndex(), 1.6, 1, function() self:SetSkin(0) end)
-		self:EmitSound(error_sound, 120)
+	if self._disabled then
+		self:EmitSound(disabled_sound)
+		return
 	end
+
+	if password == self:GetPassword() then
+
+		self:TriggerOutput("OnCorrectPassword", ply)
+
+		self:SetSkin(1)
+
+		timer.Create("fnafgm_keypad_skin_reset_" .. self:EntIndex(), 1.6, 1,
+		function()
+			if IsValid(self) then
+				self:SetSkin(0)
+			end
+		end)
+
+		self:EmitSound(ok_sound, 120)
+
+	else
+
+		self:TriggerOutput("OnBadPassword", ply)
+
+		self:SetSkin(2)
+
+		timer.Create("fnafgm_keypad_skin_reset_" .. self:EntIndex(), 1.6, 1,
+		function()
+			if IsValid(self) then
+				self:SetSkin(0)
+			end
+		end)
+
+		self:EmitSound(error_sound, 120)
+
+	end
+
+end
+
+function ENT:AcceptInput(name, activator, caller, data)
+
+	if name == "Enable" then
+
+		self._disabled = false
+
+		return true
+
+	elseif name == "Disable" then
+
+		self._disabled = true
+
+		return true
+
+	end
+
+	return false
 
 end
 
@@ -73,6 +130,10 @@ function ENT:KeyValue(k, v)
 	elseif k == "Password" then
 
 		self:SetPassword(v)
+
+	elseif k == "StartDisabled" then
+
+		self._disabled = true
 
 	end
 
@@ -91,19 +152,13 @@ function ENT:SetupDataTables()
 end
 
 function ENT:Draw()
-
 	self:DrawModel()
-
 end
 
 function ENT:CanTool(ply, trace, mode)
-
-	return !GAMEMODE.IsFNAFGMDerived
-
+	return not GAMEMODE.IsFNAFGMDerived
 end
 
 function ENT:CanProperty(ply, property)
-
-	return !GAMEMODE.IsFNAFGMDerived
-
+	return not GAMEMODE.IsFNAFGMDerived
 end
