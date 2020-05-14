@@ -1331,13 +1331,17 @@ function GM:ErrorLog(str, tn)
 
 end
 
+local ent_class_blacklist = {
+	func_door = true,
+	func_button = true,
+	func_door_rotating = true,
+}
+
 function GM:CanTool(ply, trace, mode)
 
-	if trace.Entity:IsValid() and trace.Entity:GetClass() == "func_door" then
+	local ent = trace.Entity
 
-		return false
-
-	elseif trace.Entity:IsValid() and trace.Entity:GetClass() == "func_button" then
+	if IsValid(ent) and ent_class_blacklist[ent:GetClass()] then
 
 		return false
 
@@ -1353,12 +1357,11 @@ function GM:CanTool(ply, trace, mode)
 
 end
 
-function GM:CanProperty(pl, property, ent)
+function GM:CanProperty(ply, property, ent)
 
 	local classname = ent:GetClass()
 
-	if classname == "func_door" then return false end
-	if classname == "func_button" then return false end
+	if ent_class_blacklist[classname] then return false end
 
 	if !fnafgm_sandbox_enable:GetBool() and !ply:IsSuperAdmin() then
 
@@ -1366,27 +1369,25 @@ function GM:CanProperty(pl, property, ent)
 
 	end
 
-	return SandboxClass.CanProperty(self, pl, property, ent)
+	return SandboxClass.CanProperty(self, ply, property, ent)
 
 end
 
-function GM:CanDrive(pl, ent)
+function GM:CanDrive(ply, ent)
 
 	local classname = ent:GetClass()
 
-	if classname == "func_door" then return false end
-	if classname == "func_button" then return false end
+	if ent_class_blacklist[classname] then return false end
 
-	return SandboxClass.CanDrive(self, pl, ent)
+	return SandboxClass.CanDrive(self, ply, ent)
 
 end
 
 function GM:PhysgunPickup(ply, ent)
 
-	local EntClass = ent:GetClass()
+	local classname = ent:GetClass()
 
-	if EntClass == "func_door" then return false end
-	if EntClass == "func_button" then return false end
+	if ent_class_blacklist[classname] then return false end
 
 	return SandboxClass.PhysgunPickup(self, ply, ent)
 
