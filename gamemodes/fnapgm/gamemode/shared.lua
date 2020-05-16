@@ -135,7 +135,7 @@ GM.MapList = {
 }
 
 GM.MapListLinks = {
-	fnap_scc = "https://steamcommunity.com/sharedfiles/filedetails/?id=542724054"
+	fnap_scc = "https://steamcommunity.com/sharedfiles/filedetails/?id=2098828427"
 }
 
 GM.Animatronic = {}

@@ -11,7 +11,7 @@ resource.AddWorkshop("2053617005")
 DeriveGamemode("fnafgm")
 
 if game.GetMap() == "fnap_scc" then
-	resource.AddWorkshop("542724054")
+	resource.AddWorkshop("2098828427")
 end
 
 
