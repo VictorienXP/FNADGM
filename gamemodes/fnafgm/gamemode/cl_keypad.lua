@@ -37,7 +37,7 @@ local passwords = {
 			Zed:SetPos(0, 0)
 			Zed:SetSize(384, 384)
 			Zed:SetAllowLua(true)
-			Zed:OpenURL("www.Xperidia.com/DAT_FACE.html")
+			Zed:OpenURL("https://assets.xperidia.com/fnafgm/dat_face.html")
 			Zed:SetScrollbars(false)
 
 			surface.PlaySound("ambient/water/drip" .. math.random(1, 4) .. ".wav")
@@ -82,6 +82,46 @@ local passwords = {
 			end
 			GAMEMODE.KeyPadFrame:Close()
 			return ""
+		end
+	},
+
+	["746427"] = {
+		func = function()
+
+			if GAMEMODE.KeyPadFrame.btn then
+				for k, v in pairs(GAMEMODE.KeyPadFrame.btn) do
+					if IsValid(v) then
+						v:Remove()
+					end
+				end
+			end
+
+			local x, y = 442, 384
+
+			GAMEMODE.KeyPadFrame.Passlbl:Remove()
+			GAMEMODE.KeyPadFrame.back:Remove()
+
+			GAMEMODE.KeyPadFrame.okbtn:Remove()
+
+			GAMEMODE.KeyPadFrame:SetSize(x, y)
+			GAMEMODE.KeyPadFrame:SetPos(ScrW() / 2 - x / 2, ScrH() / 2 - y / 2)
+
+			GAMEMODE.KeyPadFrame._do_not_paint = true
+
+			GAMEMODE.KeyPadFrame.closebtn:SetPos(x - 32, 0)
+			GAMEMODE.KeyPadFrame.closebtn:SetZPos(1000)
+
+			local Zed = vgui.Create("DHTML", GAMEMODE.KeyPadFrame)
+			Zed:SetPos(0, 0)
+			Zed:SetSize(x, y)
+			Zed:SetAllowLua(true)
+			Zed:OpenURL("https://assets.xperidia.com/fnafgm/pingas.html")
+			Zed:SetScrollbars(false)
+
+			surface.PlaySound("ambient/water/drip" .. math.random(1, 4) .. ".wav")
+
+			return ""
+
 		end
 	},
 
@@ -206,7 +246,9 @@ function GM:KeyPad(ent)
 		self.KeyPadFrame:ShowCloseButton(false)
 		self.KeyPadFrame:SetScreenLock(true)
 		self.KeyPadFrame.Paint = function(self, w, h)
-			draw.RoundedBox(4, 0, 0, w, h, Color(64, 64, 64, 255))
+			if not self._do_not_paint then
+				draw.RoundedBox(4, 0, 0, w, h, Color(64, 64, 64, 255))
+			end
 		end
 		self.KeyPadFrame.Think = function(self)
 
@@ -328,7 +370,6 @@ function GM:KeyPad(ent)
 			self.selectedbtn = new
 			new.selected = true
 		end
-		fnafgmSecretD = self.KeyPadFrame
 
 		self.KeyPadFrame.btn = {}
 
