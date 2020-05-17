@@ -1947,7 +1947,7 @@ function fnafgmTimeThink()
 
 		timer.Create("fnafgmNightPassed", 11, 1, function()
 
-			game.CleanUpMap()
+			game.CleanUpMap(false, {"prop_static", "prop_physics"})
 			--GAMEMODE.Vars.night = GAMEMODE.Vars.night + 1
 
 			for k, v in pairs(player.GetAll()) do
