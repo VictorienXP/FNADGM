@@ -1335,6 +1335,8 @@ local ent_class_blacklist = {
 	func_door = true,
 	func_button = true,
 	func_door_rotating = true,
+	func_brush = true,
+	func_physbox = true,
 }
 
 function GM:CanTool(ply, trace, mode)
