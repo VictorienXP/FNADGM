@@ -26,7 +26,9 @@ function ENT:AcceptInput(name, activator, caller, data)
 		GAMEMODE.Vars.power = GAMEMODE.Vars.power - GAMEMODE.Vars.foxyknockdoorpena
 		GAMEMODE:Log("Foxy removed " .. GAMEMODE.Vars.foxyknockdoorpena .. "% of the power")
 		fnafgmPowerUpdate()
-		if GAMEMODE.Vars.foxyknockdoorpena <= 12 then GAMEMODE.Vars.foxyknockdoorpena = GAMEMODE.Vars.foxyknockdoorpena + GAMEMODE.Vars.addfoxyknockdoorpena end
+		if GAMEMODE.Vars.foxyknockdoorpena <= 12 then
+			GAMEMODE.Vars.foxyknockdoorpena = GAMEMODE.Vars.foxyknockdoorpena + GAMEMODE.Vars.addfoxyknockdoorpena
+		end
 		if GAMEMODE.Vars.addfoxyknockdoorpena == 4 then
 			GAMEMODE.Vars.addfoxyknockdoorpena = 6
 		elseif GAMEMODE.Vars.addfoxyknockdoorpena == 6 then
@@ -99,14 +101,20 @@ function ENT:AcceptInput(name, activator, caller, data)
 
 end
 
-function ENT:CanTool(ply, trace, mode)
+function ENT:KeyValue(k, v)
 
-	return !GAMEMODE.IsFNAFGMDerived
+	if string.Left(k, 2) == "On" then
+
+		self:StoreOutput(k, v)
+
+	end
 
 end
 
+function ENT:CanTool(ply, trace, mode)
+	return not GAMEMODE.IsFNAFGMDerived
+end
+
 function ENT:CanProperty(ply, property)
-
-	return !GAMEMODE.IsFNAFGMDerived
-
+	return not GAMEMODE.IsFNAFGMDerived
 end

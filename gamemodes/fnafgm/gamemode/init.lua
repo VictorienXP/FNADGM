@@ -3177,3 +3177,13 @@ net.Receive("fnafgm_password_input", function(len, ply)
 	ent:PasswordInput(password, ply)
 
 end)
+
+function GM:TriggerLinkOutput(output, activator, data)
+
+	for k, v in pairs(ents.FindByClass("fnafgm_link")) do
+
+		v:TriggerOutput(output, activator, data)
+
+	end
+
+end
