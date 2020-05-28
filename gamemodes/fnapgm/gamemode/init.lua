@@ -823,8 +823,6 @@ function fnapgmGoJumpscare(me, self, timet)
 				tlight:Fire("Enable", NULL, 2)
 			end
 			timet = timet * 2
-		elseif me == GAMEMODE.Animatronic.Applejack then
-			timet = timet * 3
 		end
 
 		timer.Create("fnafgmJumpscare" .. me, timet, 1, function()
