@@ -1,0 +1,5 @@
+"fnapgmsbox"
+{
+	"base"		"fnapgm"
+	"title"		"Five Nights at Pinkie's Sandbox"
+}
