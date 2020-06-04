@@ -19,8 +19,8 @@
 		"*.gma",
 		"desktop.ini",
 		"Thumbs.db",
+		"README.md",
 		"CODEOWNERS",
-		"LICENSE",
-		"glualint.json"
+		"gamemodes/*/content/*"
 	]
 }
