@@ -17,55 +17,58 @@ end
 
 function fnapgmStartNightCustom(ply)
 
-	if GAMEMODE.Vars.startday then return end
+	local gm = GAMEMODE
+	local map = game.GetMap()
 
-	if game.GetMap() == "fnap_scc" then
+	if gm.Vars.startday then return end
 
-		GAMEMODE:SetNightTemplate(true)
+	if map == "fnap_scc" then
+
+		gm:SetNightTemplate(true)
 
 		if btn and btn:IsValid() then btn:Fire("use") end
 
 		local sound = ""
 		local mutetime = 0
 
-		if GAMEMODE.Vars.night == 1 then
-			sound = GAMEMODE.Sound_Calls.fnap_scc[1]
-			GAMEMODE.Vars.mute = false
+		if gm.Vars.night == 1 then
+			sound = gm.Sound_Calls.fnap_scc[1]
+			gm.Vars.mute = false
 			mutetime = 64.2
-		elseif GAMEMODE.Vars.night == 2 then
-			sound = GAMEMODE.Sound_Calls.fnap_scc[2]
-			GAMEMODE.Vars.mute = false
+		elseif gm.Vars.night == 2 then
+			sound = gm.Sound_Calls.fnap_scc[2]
+			gm.Vars.mute = false
 			mutetime = 46.7
-		elseif GAMEMODE.Vars.night == 3 then
-			sound = GAMEMODE.Sound_Calls.fnap_scc[3]
-			GAMEMODE.Vars.mute = false
+		elseif gm.Vars.night == 3 then
+			sound = gm.Sound_Calls.fnap_scc[3]
+			gm.Vars.mute = false
 			mutetime = 47.4
-		elseif GAMEMODE.Vars.night == 4 then
-			sound = GAMEMODE.Sound_Calls.fnap_scc[4]
-			GAMEMODE.Vars.mute = false
+		elseif gm.Vars.night == 4 then
+			sound = gm.Sound_Calls.fnap_scc[4]
+			gm.Vars.mute = false
 			mutetime = 64.3
-		elseif GAMEMODE.Vars.night == 5 then
-			sound = GAMEMODE.Sound_Calls.fnap_scc[5]
-			GAMEMODE.Vars.mute = false
+		elseif gm.Vars.night == 5 then
+			sound = gm.Sound_Calls.fnap_scc[5]
+			gm.Vars.mute = false
 			mutetime = 76.8
 		end
 
-		for k, v in pairs(ents.FindByName("fnafgm_CallSource")) do
+		for _, v in pairs(ents.FindByName("fnafgm_CallSource")) do
 			v:SetKeyValue("message", sound)
 		end
 
-		for k, v in pairs(ents.FindByName("fnafgm_CallButton")) do
+		for _, v in pairs(ents.FindByName("fnafgm_CallButton")) do
 			v:Fire("addoutput", "OnPressed fnafgm_CallSource,Volume,0,0.00,1")
 			v:Fire("addoutput", "OnPressed fnafgm_CallSprite,ToggleSprite,none,0,1")
 			v:Fire("addoutput", "OnPressed fnafgm_link,MuteCall,,0,-1")
 		end
 
-		GAMEMODE:CreateAnimatronic(GAMEMODE.Animatronic.Pinkie, GAMEMODE.APos.fnap_scc.SS)
-		GAMEMODE:CreateAnimatronic(GAMEMODE.Animatronic.Fluttershy, GAMEMODE.APos.fnap_scc.SS)
-		GAMEMODE:CreateAnimatronic(GAMEMODE.Animatronic.Twilight, GAMEMODE.APos.fnap_scc.SS)
-		GAMEMODE:CreateAnimatronic(GAMEMODE.Animatronic.Rarity, GAMEMODE.APos.fnap_scc.SS)
-		GAMEMODE:CreateAnimatronic(GAMEMODE.Animatronic.Applejack, GAMEMODE.APos.fnap_scc.SS)
-		GAMEMODE:CreateAnimatronic(GAMEMODE.Animatronic.RainbowDash, GAMEMODE.APos.fnap_scc.Trash)
+		gm:CreateAnimatronic(gm.Animatronic.Pinkie, gm.APos.fnap_scc.SS)
+		gm:CreateAnimatronic(gm.Animatronic.Fluttershy, gm.APos.fnap_scc.SS)
+		gm:CreateAnimatronic(gm.Animatronic.Twilight, gm.APos.fnap_scc.SS)
+		gm:CreateAnimatronic(gm.Animatronic.Rarity, gm.APos.fnap_scc.SS)
+		gm:CreateAnimatronic(gm.Animatronic.Applejack, gm.APos.fnap_scc.SS)
+		gm:CreateAnimatronic(gm.Animatronic.RainbowDash, gm.APos.fnap_scc.Trash)
 
 		timer.Create("fnafgmTempoStartU", 1.3, 1, function()
 
@@ -77,8 +80,8 @@ function fnapgmStartNightCustom(ply)
 				end
 			end
 
-			GAMEMODE.Vars.LightUse[1] = false
-			GAMEMODE.Vars.LightUse[2] = false
+			gm.Vars.LightUse[1] = false
+			gm.Vars.LightUse[2] = false
 
 			timer.Remove("fnafgmTempoStartU")
 
@@ -86,24 +89,24 @@ function fnapgmStartNightCustom(ply)
 
 		timer.Create("fnafgmTempoStart", 8.2, 1, function()
 
-			GAMEMODE.Vars.tempostart = false
+			gm.Vars.tempostart = false
 
 			fnafgmVarsUpdate()
 			fnafgmPowerUpdate()
 
 			if IsValid(ents.FindByName("RainbowTimer")[1]) then ents.FindByName("RainbowTimer")[1]:Fire("Enable") end
 
-			if !GAMEMODE.Vars.mute then
+			if not gm.Vars.mute then
 
 				ents.FindByName("fnafgm_CallSprite")[1]:Fire("ToggleSprite")
 
-				for k, v in pairs(ents.FindByName("fnafgm_CallSource")) do
+				for _, v in pairs(ents.FindByName("fnafgm_CallSource")) do
 					v:Fire("PlaySound")
 				end
 
 				timer.Create("fnafgmEndCall", mutetime, 1, function()
-					GAMEMODE.Vars.mute = true
-					for k, v in pairs(ents.FindByName("fnafgm_CallButton")) do
+					gm.Vars.mute = true
+					for _, v in pairs(ents.FindByName("fnafgm_CallButton")) do
 						v:Fire("Use")
 					end
 				end)
@@ -112,22 +115,22 @@ function fnapgmStartNightCustom(ply)
 
 			for k, v in pairs(GAMEMODE.Vars.Animatronics) do
 
-				if GAMEMODE.AnimatronicsCD[k] and GAMEMODE.AnimatronicsCD[k][game.GetMap()] and GAMEMODE.AnimatronicsMaxCD[k] and GAMEMODE.AnimatronicsMaxCD[k][game.GetMap()] then
+				if gm.AnimatronicsCD[k] and gm.AnimatronicsCD[k][map] and gm.AnimatronicsMaxCD[k] and gm.AnimatronicsMaxCD[k][map] then
 
-					local randtime = math.random(GAMEMODE.AnimatronicsCD[k][game.GetMap()][GAMEMODE.Vars.night] or GAMEMODE.AnimatronicsCD[k][game.GetMap()][0], GAMEMODE.AnimatronicsMaxCD[k][game.GetMap()][GAMEMODE.Vars.night] or GAMEMODE.AnimatronicsMaxCD[k][game.GetMap()][0])
-					if GAMEMODE.AnimatronicsCD[k][game.GetMap()][GAMEMODE.Vars.night] != -1 then
-						timer.Create("fnafgmAnimatronicMove" .. k, randtime, 0, function() GAMEMODE:AutoMoveAnimatronic(k) end)
+					local randtime = math.random(gm.AnimatronicsCD[k][map][gm.Vars.night] or gm.AnimatronicsCD[k][map][0], gm.AnimatronicsMaxCD[k][map][gm.Vars.night] or gm.AnimatronicsMaxCD[k][map][0])
+					if gm.AnimatronicsCD[k][map][gm.Vars.night] ~= -1 then
+						timer.Create("fnafgmAnimatronicMove" .. k, randtime, 0, function() gm:AutoMoveAnimatronic(k) end)
 					end
 
 				else
 
-					GAMEMODE:Log("Missing or incomplete cooldown info for animatronic " .. ((GAMEMODE.AnimatronicName[k] .. " (" .. (k or 0) .. ")") or k or 0) .. "!")
+					gm:Log("Missing or incomplete cooldown info for animatronic " .. ((gm.AnimatronicName[k] .. " (" .. (k or 0) .. ")") or k or 0) .. "!")
 
 				end
 
 			end
 
-			timer.Create("fnafgmTimeThink", GAMEMODE.HourTime, 0, fnafgmTimeThink)
+			timer.Create("fnafgmTimeThink", gm.HourTime, 0, fnafgmTimeThink)
 
 			timer.Remove("fnafgmTempoStart")
 
@@ -137,13 +140,13 @@ function fnapgmStartNightCustom(ply)
 
 			timer.Adjust("fnapgmPinkieScare", math.random(280, 370), 1, function()
 
-				if GAMEMODE.Vars.startday then
+				if gm.Vars.startday then
 
-					for k, v in pairs(player.GetAll()) do
+					for _, v in pairs(player.GetAll()) do
 
 						if v:Alive() then
 
-							v:SendLua('GAMEMODE:JumpscareOverlay("deathscreens/pinkieisscary",2)')
+							v:SendLua([[GAMEMODE:JumpscareOverlay("deathscreens/pinkieisscary",2)]])
 							v:SendLua([[LocalPlayer():EmitSound("fnapgm_pinkiescare")]])
 
 						end
@@ -160,13 +163,13 @@ function fnapgmStartNightCustom(ply)
 
 			timer.Create("fnapgmPinkieScare", math.random(280, 370), 1, function()
 
-				if GAMEMODE.Vars.startday then
+				if gm.Vars.startday then
 
-					for k, v in pairs(player.GetAll()) do
+					for _, v in pairs(player.GetAll()) do
 
 						if v:Alive() then
 
-							v:SendLua('GAMEMODE:JumpscareOverlay("deathscreens/pinkieisscary",2)')
+							v:SendLua([[GAMEMODE:JumpscareOverlay("deathscreens/pinkieisscary",2)]])
 							v:SendLua([[LocalPlayer():EmitSound("fnapgm_pinkiescare")]])
 
 						end
@@ -181,24 +184,24 @@ function fnapgmStartNightCustom(ply)
 
 		end
 
-	elseif game.GetMap() == "fnap_cb" then
+	elseif map == "fnap_cb" then
 
-		GAMEMODE:SetNightTemplate(false)
-		if GAMEMODE.Vars.night == 1 then
-			GAMEMODE.Vars.power = 115
-			GAMEMODE.Vars.powertot = 115
-		elseif GAMEMODE.Vars.night == 2 then
-			GAMEMODE.Vars.power = 100
-			GAMEMODE.Vars.powertot = 100
-		elseif GAMEMODE.Vars.night == 3 then
-			GAMEMODE.Vars.power = 85
-			GAMEMODE.Vars.powertot = 85
-		elseif GAMEMODE.Vars.night == 4 then
-			GAMEMODE.Vars.power = 67
-			GAMEMODE.Vars.powertot = 67
+		gm:SetNightTemplate(false)
+		if gm.Vars.night == 1 then
+			gm.Vars.power = 115
+			gm.Vars.powertot = 115
+		elseif gm.Vars.night == 2 then
+			gm.Vars.power = 100
+			gm.Vars.powertot = 100
+		elseif gm.Vars.night == 3 then
+			gm.Vars.power = 85
+			gm.Vars.powertot = 85
+		elseif gm.Vars.night == 4 then
+			gm.Vars.power = 67
+			gm.Vars.powertot = 67
 		else
-			GAMEMODE.Vars.power = 50
-			GAMEMODE.Vars.powertot = 50
+			gm.Vars.power = 50
+			gm.Vars.powertot = 50
 		end
 
 		timer.Create("fnafgmTempoStartU", 1.3, 1, function()
@@ -217,7 +220,7 @@ function fnapgmStartNightCustom(ply)
 
 		timer.Create("fnafgmTempoStart", 8.2, 1, function()
 
-			GAMEMODE.Vars.tempostart = false
+			gm.Vars.tempostart = false
 
 			fnafgmVarsUpdate()
 			fnafgmPowerUpdate()
@@ -238,21 +241,23 @@ hook.Add("fnafgmCustomStart", "fnapgmStartNightCustom", fnapgmStartNightCustom)
 
 function fnapgmMapOverrides()
 
-	if game.GetMap() == "fnap_scc" then
+	local map = game.GetMap()
 
-		for k, v in pairs(ents.FindByName("TimerButton")) do
+	if map == "fnap_scc" then
+
+		for _, v in pairs(ents.FindByName("TimerButton")) do
 			btn = v
 		end
 
-		for k, v in pairs(ents.FindByName("Door1Light")) do
+		for _, v in pairs(ents.FindByName("Door1Light")) do
 			light1 = v
 		end
 
-		for k, v in pairs(ents.FindByName("Door2Light")) do
+		for _, v in pairs(ents.FindByName("Door2Light")) do
 			light2 = v
 		end
 
-		for k, v in pairs(ents.FindByName("OfficeLightSwitch")) do
+		for _, v in pairs(ents.FindByName("OfficeLightSwitch")) do
 			light3 = v
 		end
 
@@ -268,13 +273,16 @@ hook.Add("fnafgmMapOverridesCustom", "fnapgmMapOverrides", fnapgmMapOverrides)
 
 function fnapgmPowerCalc()
 
-	if GAMEMODE.Vars.iniok and GAMEMODE.Vars.mapoverrideok and GAMEMODE.Vars.startday and GAMEMODE.Vars.active and game.GetMap() == "fnap_scc" then
+	local gm = GAMEMODE
+	local map = game.GetMap()
 
-		GAMEMODE.Vars.powerusage = GAMEMODE.Power_Usage_Base
+	if gm.Vars.iniok and gm.Vars.mapoverrideok and gm.Vars.startday and gm.Vars.active and map == "fnap_scc" then
 
-		if GAMEMODE.Vars.poweroff or fnafgm_disablepower:GetBool() then
+		gm.Vars.powerusage = gm.Power_Usage_Base
 
-			GAMEMODE.Vars.powerusage = 0
+		if gm.Vars.poweroff or fnafgm_disablepower:GetBool() then
+
+			gm.Vars.powerusage = 0
 
 		else
 
@@ -282,7 +290,7 @@ function fnapgmPowerCalc()
 
 			for k, v in pairs(player.GetAll()) do
 
-				if GAMEMODE.Vars.tabused[v] and GAMEMODE.Vars.tabused[v] == true then
+				if gm.Vars.tabused[v] and gm.Vars.tabused[v] == true then
 
 					tabactualuse = true
 
@@ -292,63 +300,63 @@ function fnapgmPowerCalc()
 
 			if tabactualuse then -- Tab use
 
-				GAMEMODE.Vars.powerusage = GAMEMODE.Vars.powerusage + 1
+				gm.Vars.powerusage = gm.Vars.powerusage + 1
 
 			end
 
-			if GAMEMODE.Vars.DoorClosed[1] then -- Door 1 use
+			if gm.Vars.DoorClosed[1] then -- Door 1 use
 
-				GAMEMODE.Vars.powerusage = GAMEMODE.Vars.powerusage + 1
-
-			end
-
-			if GAMEMODE.Vars.DoorClosed[2] then -- Door 2 use
-
-				GAMEMODE.Vars.powerusage = GAMEMODE.Vars.powerusage + 1
+				gm.Vars.powerusage = gm.Vars.powerusage + 1
 
 			end
 
-			if GAMEMODE.Vars.LightUse[1] or GAMEMODE.Vars.LightUse[2] then -- Lights use
+			if gm.Vars.DoorClosed[2] then -- Door 2 use
 
-				GAMEMODE.Vars.powerusage = GAMEMODE.Vars.powerusage + 1
+				gm.Vars.powerusage = gm.Vars.powerusage + 1
 
 			end
 
-			if GAMEMODE.Vars.AprilFool or fnafgm_forceseasonalevent:GetInt() == 2 then -- Troll use
+			if gm.Vars.LightUse[1] or gm.Vars.LightUse[2] then -- Lights use
 
-				GAMEMODE.Vars.powerusage = GAMEMODE.Vars.powerusage + 5
+				gm.Vars.powerusage = gm.Vars.powerusage + 1
+
+			end
+
+			if gm.Vars.AprilFool or fnafgm_forceseasonalevent:GetInt() == 2 then -- Troll use
+
+				gm.Vars.powerusage = gm.Vars.powerusage + 5
 
 			end
 
 		end
 
-		if GAMEMODE.Vars.powerusage == 0 then
+		if gm.Vars.powerusage == 0 then
 
-			GAMEMODE.Vars.powerdrain = 0
+			gm.Vars.powerdrain = 0
 
 		else
 
-			GAMEMODE.Vars.powerdrain = GAMEMODE.Power_Drain_Time
+			gm.Vars.powerdrain = gm.Power_Drain_Time
 
-			for i = 1, GAMEMODE.Vars.powerusage - 1 do
-				GAMEMODE.Vars.powerdrain = GAMEMODE.Vars.powerdrain / 2
+			for i = 1, gm.Vars.powerusage - 1 do
+				gm.Vars.powerdrain = gm.Vars.powerdrain / 2
 			end
 
-			if GAMEMODE.Vars.powerchecktime == nil and GAMEMODE.Vars.oldpowerdrain == nil and !GAMEMODE.Vars.poweroff then
+			if gm.Vars.powerchecktime == nil and gm.Vars.oldpowerdrain == nil and not gm.Vars.poweroff then
 
-				GAMEMODE.Vars.powerchecktime = CurTime() + GAMEMODE.Vars.powerdrain
-				GAMEMODE.Vars.oldpowerdrain = GAMEMODE.Vars.powerdrain
+				gm.Vars.powerchecktime = CurTime() + gm.Vars.powerdrain
+				gm.Vars.oldpowerdrain = gm.Vars.powerdrain
 
-			elseif GAMEMODE.Vars.powerchecktime != nil and GAMEMODE.Vars.oldpowerdrain != nil and !GAMEMODE.Vars.poweroff then
+			elseif gm.Vars.powerchecktime ~= nil and gm.Vars.oldpowerdrain ~= nil and not gm.Vars.poweroff then
 
-				local calcchangepower = GAMEMODE.Vars.oldpowerdrain-GAMEMODE.Vars.powerdrain
+				local calcchangepower = gm.Vars.oldpowerdrain-gm.Vars.powerdrain
 
-				if GAMEMODE.Vars.powerchecktime <= CurTime() + calcchangepower then
+				if gm.Vars.powerchecktime <= CurTime() + calcchangepower then
 
-					GAMEMODE.Vars.powerchecktime = nil
-					GAMEMODE.Vars.oldpowerdrain = nil
-					GAMEMODE.Vars.power = GAMEMODE.Vars.power - 1
-					fnapgmDigits(GAMEMODE.Vars.power)
+					gm.Vars.powerchecktime = nil
+					gm.Vars.oldpowerdrain = nil
+					gm.Vars.power = gm.Vars.power - 1
+					fnapgmDigits(gm.Vars.power)
 
 				end
 
@@ -356,9 +364,9 @@ function fnapgmPowerCalc()
 
 		end
 
-		if GAMEMODE.Vars.power <= 0 and !GAMEMODE.Vars.poweroff then
+		if gm.Vars.power <= 0 and not gm.Vars.poweroff then
 
-			GAMEMODE:TriggerLinkOutput("OnPowerDown")
+			gm:TriggerLinkOutput("OnPowerDown")
 
 			local legacy_ent = ents.FindByName("NoMorePower")
 			if #legacy_ent > 0 then
@@ -370,23 +378,23 @@ function fnapgmPowerCalc()
 
 			for k, v in pairs(GAMEMODE.Vars.Animatronics) do
 
-				if k != GAMEMODE.Animatronic.RainbowDash then
-					GAMEMODE:SetAnimatronicPos(nil, k, GAMEMODE.APos[game.GetMap()].SS)
+				if k ~= gm.Animatronic.RainbowDash then
+					gm:SetAnimatronicPos(nil, k, gm.APos[map].SS)
 				end
 				timer.Remove("fnafgmAnimatronicMove" .. k)
 
 			end
 
-			GAMEMODE.Vars.poweroff = true
-			if !game.SinglePlayer() then norespawn = true end
-			GAMEMODE:Log("The power is gone :)")
+			gm.Vars.poweroff = true
+			if not game.SinglePlayer() then norespawn = true end
+			gm:Log("The power is gone :)")
 
 			timer.Create("fnapgmNoMorePower", 10, 1, function()
 
-				for k, v in pairs(GAMEMODE.Vars.Animatronics) do
+				for k, _ in pairs(gm.Vars.Animatronics) do
 
-					if k != GAMEMODE.Animatronic.Applejack and k != GAMEMODE.Animatronic.RainbowDash then
-						GAMEMODE:SetAnimatronicPos(nil, k, GAMEMODE.APos[game.GetMap()].Office)
+					if k ~= gm.Animatronic.Applejack and k ~= gm.Animatronic.RainbowDash then
+						gm:SetAnimatronicPos(nil, k, gm.APos[map].Office)
 					end
 
 				end
@@ -414,23 +422,23 @@ function fnapgmPowerCalc()
 
 		fnafgmPowerUpdate()
 
-	elseif GAMEMODE.Vars.iniok and GAMEMODE.Vars.mapoverrideok and GAMEMODE.Vars.startday and GAMEMODE.Vars.active and game.GetMap() == "fnap_cb" then
+	elseif gm.Vars.iniok and gm.Vars.mapoverrideok and gm.Vars.startday and gm.Vars.active and map == "fnap_cb" then
 
-		GAMEMODE.Vars.powerusage = 0
+		gm.Vars.powerusage = 0
 
-		if !GAMEMODE.Vars.poweroff and !fnafgm_disablepower:GetBool() then
+		if not gm.Vars.poweroff and not fnafgm_disablepower:GetBool() then
 
-			if GAMEMODE.Vars.LightUse[1] or GAMEMODE.Vars.LightUse[2] or GAMEMODE.Vars.LightUse[3] then
+			if gm.Vars.LightUse[1] or gm.Vars.LightUse[2] or gm.Vars.LightUse[3] then
 
-				GAMEMODE.Vars.powerusage = GAMEMODE.Vars.powerusage + 1
+				gm.Vars.powerusage = gm.Vars.powerusage + 1
 
 			end
 
-			for k, v in pairs(ents.FindByClass("fnafgm_camera")) do
+			for _, v in pairs(ents.FindByClass("fnafgm_camera")) do
 
 				if v.GetLightState and v:GetLightState() then
 
-					GAMEMODE.Vars.powerusage = GAMEMODE.Vars.powerusage + 1
+					gm.Vars.powerusage = gm.Vars.powerusage + 1
 					break
 
 				end
@@ -441,7 +449,7 @@ function fnapgmPowerCalc()
 
 				if v:FlashlightIsOn() then
 
-					GAMEMODE.Vars.powerusage = GAMEMODE.Vars.powerusage + 1
+					gm.Vars.powerusage = gm.Vars.powerusage + 1
 					break
 
 				end
@@ -450,28 +458,28 @@ function fnapgmPowerCalc()
 
 		end
 
-		if GAMEMODE.Vars.powerusage == 0 or !GAMEMODE.Vars.powerchecktime then
+		if gm.Vars.powerusage == 0 or not gm.Vars.powerchecktime then
 
-			GAMEMODE.Vars.powerchecktime = CurTime() + 1
+			gm.Vars.powerchecktime = CurTime() + 1
 
 		else
 
-			if GAMEMODE.Vars.powerchecktime <= CurTime() then
+			if gm.Vars.powerchecktime <= CurTime() then
 
-				GAMEMODE.Vars.powerchecktime = CurTime() + 1
-				GAMEMODE.Vars.power = GAMEMODE.Vars.power - 1
+				gm.Vars.powerchecktime = CurTime() + 1
+				gm.Vars.power = gm.Vars.power - 1
 
 			end
 
 		end
 
-		if GAMEMODE.Vars.power == 0 and !GAMEMODE.Vars.poweroff then
+		if gm.Vars.power == 0 and not gm.Vars.poweroff then
 
-			GAMEMODE.Vars.poweroff = true
+			gm.Vars.poweroff = true
 
 			for k, v in pairs(player.GetAll()) do
 
-				if v:FlashlightIsOn() and !fnafgmPlayerCanByPass(v, "flashlight") then
+				if v:FlashlightIsOn() and not fnafgmPlayerCanByPass(v, "flashlight") then
 
 					v:Flashlight(false)
 
@@ -481,7 +489,7 @@ function fnapgmPowerCalc()
 
 			end
 
-			GAMEMODE:Log("The battery is dead")
+			gm:Log("The battery is dead")
 
 		end
 
@@ -499,7 +507,7 @@ hook.Add("fnafgmGeneralDeath", "fnapgmGeneralDeath", fnapgmGeneralDeath)
 
 function fnapgmDigits(n)
 
-	if !n then return end
+	if not n then return end
 
 	if n > 99 then
 		n = 99
@@ -510,7 +518,7 @@ function fnapgmDigits(n)
 	local left = math.floor(n / 10)
 	local right = math.fmod(n, 10)
 
-	if left == 0 and n != 0 then
+	if left == 0 and n ~= 0 then
 		ents.FindByName("Timer_#1_SegmentE1")[1]:Fire("Enable")
 		ents.FindByName("Timer_#1_SegmentG1")[1]:Fire("Enable")
 		ents.FindByName("Timer_#1_SegmentF1")[1]:Fire("Enable")
@@ -599,7 +607,7 @@ function fnapgmDigits(n)
 		ents.FindByName("Timer_#1_SegmentA1")[1]:Fire("Disable")
 		ents.FindByName("Timer_#1_SegmentB1")[1]:Fire("Disable")
 	end
-	if right == 0 and n != 0 then
+	if right == 0 and n ~= 0 then
 		ents.FindByName("Timer_#1_SegmentE")[1]:Fire("Enable")
 		ents.FindByName("Timer_#1_SegmentG")[1]:Fire("Enable")
 		ents.FindByName("Timer_#1_SegmentF")[1]:Fire("Enable")
@@ -698,7 +706,7 @@ function fnapgmRainbowDash(self)
 		if self.FoxyMove then
 			self.FoxyMove = false
 			self.FoxyMove2 = true
-			for k, v in pairs(player.GetAll()) do
+			for _, v in pairs(player.GetAll()) do
 
 				v:SendLua([[LocalPlayer():EmitSound("fnapgm_runrainbowdash")]])
 
@@ -721,49 +729,52 @@ hook.Add("fnafgmCustomFoxy", "fnapgmRainbowDash", fnapgmRainbowDash)
 
 function fnapgmWindowScare(self, me, apos)
 
-	if game.GetMap() == "fnap_scc" then
+	local gm = GAMEMODE
+	local map = game.GetMap()
 
-		if me == GAMEMODE.Animatronic.Pinkie then
+	if map == "fnap_scc" then
 
-			if apos == GAMEMODE.APos.fnap_scc.Office and GAMEMODE.Vars.LightUse[1] and !self.wsip then
+		if me == gm.Animatronic.Pinkie then
+
+			if apos == gm.APos.fnap_scc.Office and gm.Vars.LightUse[1] and not self.wsip then
 				self:EmitSound("fnafgm_windowscare")
 				self.wsip = true
-			elseif apos == GAMEMODE.APos.fnap_scc.Office and !GAMEMODE.Vars.LightUse[1] and self.wsip then
+			elseif apos == gm.APos.fnap_scc.Office and not gm.Vars.LightUse[1] and self.wsip then
 				self.wsip = false
-			elseif apos != GAMEMODE.APos.fnap_scc.Office and self.wsip then
+			elseif apos ~= gm.APos.fnap_scc.Office and self.wsip then
 				self.wsip = false
 			end
 
-		elseif me == GAMEMODE.Animatronic.Fluttershy then
+		elseif me == gm.Animatronic.Fluttershy then
 
-			if apos == GAMEMODE.APos.fnap_scc.Office and GAMEMODE.Vars.LightUse[2] and !self.wsip then
+			if apos == gm.APos.fnap_scc.Office and gm.Vars.LightUse[2] and not self.wsip then
 				self:EmitSound("fnafgm_windowscare")
 				self.wsip = true
-			elseif apos == GAMEMODE.APos.fnap_scc.Office and !GAMEMODE.Vars.LightUse[2] and self.wsip then
+			elseif apos == gm.APos.fnap_scc.Office and not gm.Vars.LightUse[2] and self.wsip then
 				self.wsip = false
-			elseif apos != GAMEMODE.APos.fnap_scc.Office and self.wsip then
+			elseif apos ~= gm.APos.fnap_scc.Office and self.wsip then
 				self.wsip = false
 			end
 
-		elseif me == GAMEMODE.Animatronic.Twilight then
+		elseif me == gm.Animatronic.Twilight then
 
-			if apos == GAMEMODE.APos.fnap_scc.Office and GAMEMODE.Vars.LightUse[2] and !self.wsip then
+			if apos == gm.APos.fnap_scc.Office and gm.Vars.LightUse[2] and not self.wsip then
 				self:EmitSound("fnafgm_windowscare")
 				self.wsip = true
-			elseif apos == GAMEMODE.APos.fnap_scc.Office and !GAMEMODE.Vars.LightUse[2] and self.wsip then
+			elseif apos == gm.APos.fnap_scc.Office and not gm.Vars.LightUse[2] and self.wsip then
 				self.wsip = false
-			elseif apos != GAMEMODE.APos.fnap_scc.Office and self.wsip then
+			elseif apos ~= gm.APos.fnap_scc.Office and self.wsip then
 				self.wsip = false
 			end
 
-		elseif me == GAMEMODE.Animatronic.Rarity then
+		elseif me == gm.Animatronic.Rarity then
 
-			if apos == GAMEMODE.APos.fnap_scc.Office and GAMEMODE.Vars.LightUse[1] and !self.wsip then
+			if apos == gm.APos.fnap_scc.Office and gm.Vars.LightUse[1] and not self.wsip then
 				self:EmitSound("fnafgm_windowscare")
 				self.wsip = true
-			elseif apos == GAMEMODE.APos.fnap_scc.Office and !GAMEMODE.Vars.LightUse[1] and self.wsip then
+			elseif apos == gm.APos.fnap_scc.Office and not gm.Vars.LightUse[1] and self.wsip then
 				self.wsip = false
-			elseif apos != GAMEMODE.APos.fnap_scc.Office and self.wsip then
+			elseif apos ~= gm.APos.fnap_scc.Office and self.wsip then
 				self.wsip = false
 			end
 
@@ -779,8 +790,11 @@ hook.Add("fnafgmWindowScare", "fnapgmWindowScare", fnapgmWindowScare)
 
 function fnapgmFixPos(self, me, apos)
 
-	if me != GAMEMODE.Animatronic.RainbowDash and GAMEMODE.AnimatronicAPos[me] and GAMEMODE.AnimatronicAPos[me][game.GetMap()] and GAMEMODE.AnimatronicAPos[me][game.GetMap()][apos] then
-		self:SetPos(GAMEMODE.AnimatronicAPos[me][game.GetMap()][apos][1])
+	local gm = GAMEMODE
+	local map = game.GetMap()
+
+	if me ~= gm.Animatronic.RainbowDash and gm.AnimatronicAPos[me] and gm.AnimatronicAPos[me][map] and gm.AnimatronicAPos[me][map][apos] then
+		self:SetPos(gm.AnimatronicAPos[me][map][apos][1])
 	end
 
 	return true
@@ -791,9 +805,12 @@ hook.Add("fnafgmFixPos", "fnapgmFixPos", fnapgmFixPos)
 
 function fnapgmGoJumpscare(me, self, timet)
 
-	if (game.GetMap() == "fnap_scc") then
+	local gm = GAMEMODE
+	local map = game.GetMap()
 
-		if GAMEMODE.Vars.poweroff then return true end
+	if (map == "fnap_scc") then
+
+		if gm.Vars.poweroff then return true end
 
 		if me == GAMEMODE.Animatronic.Applejack then
 			for k, v in pairs(player.GetAll()) do
@@ -809,7 +826,7 @@ function fnapgmGoJumpscare(me, self, timet)
 			end
 		end
 
-		if me == GAMEMODE.Animatronic.RainbowDash then
+		if me == gm.Animatronic.RainbowDash then
 			self.FoxyWillMove = true
 			if IsValid(ents.FindByName("RDDoor")[1]) then ents.FindByName("RDDoor")[1]:Fire("Open") end
 			local flight = ents.FindByName("FluoLight")[1]
@@ -837,9 +854,9 @@ function fnapgmGoJumpscare(me, self, timet)
 
 			if sgdead then timer.Remove("fnafgmJumpscare" .. me) return end
 
-			if GAMEMODE.Vars.startday and me != GAMEMODE.Animatronic.RainbowDash then
+			if gm.Vars.startday and me ~= gm.Animatronic.RainbowDash then
 				self:Jumpscare()
-			elseif GAMEMODE.Vars.startday then
+			elseif gm.Vars.startday then
 
 				self.FoxyWillMove2 = true
 
@@ -887,27 +904,14 @@ hook.Add("fnafgmCustomGoJumpscare", "fnapgmGoJumpscare", fnapgmGoJumpscare)
 
 function fnapgmJumpscare(me, self)
 
-	if (game.GetMap() == "fnap_scc") then
+	local gm = GAMEMODE
+	local map = game.GetMap()
 
-		if me == GAMEMODE.Animatronic.Pinkie and !GAMEMODE.Vars.DoorClosed[1] then
+	if (map == "fnap_scc") then
 
-			for k, v in pairs(player.GetAll()) do
+		if me == gm.Animatronic.Pinkie and not gm.Vars.DoorClosed[1] then
 
-				if v:Alive() and v.IsOnSecurityRoom then
-
-					v:SendLua('GAMEMODE:JumpscareOverlay("fnapgm/screamers/fnap_scc_' .. me .. '")')
-					v:SendLua([[LocalPlayer():EmitSound("fnafgm_scream")]])
-					v:TakeDamage(100, self)
-
-				end
-
-			end
-
-			GAMEMODE:Log("Jumpscared by " .. GAMEMODE.AnimatronicName[me])
-
-		elseif me == GAMEMODE.Animatronic.Fluttershy and !GAMEMODE.Vars.DoorClosed[2] then
-
-			for k, v in pairs(player.GetAll()) do
+			for _, v in pairs(player.GetAll()) do
 
 				if v:Alive() and v.IsOnSecurityRoom then
 
@@ -919,27 +923,11 @@ function fnapgmJumpscare(me, self)
 
 			end
 
-			GAMEMODE:Log("Jumpscared by " .. GAMEMODE.AnimatronicName[me])
+			gm:Log("Jumpscared by " .. gm.AnimatronicName[me])
 
-		elseif me == GAMEMODE.Animatronic.Twilight and !GAMEMODE.Vars.DoorClosed[2] then
+		elseif me == gm.Animatronic.Fluttershy and not gm.Vars.DoorClosed[2] then
 
-			for k, v in pairs(player.GetAll()) do
-
-				if v:Alive() and v.IsOnSecurityRoom then
-
-					v:SendLua('GAMEMODE:JumpscareOverlay("fnapgm/screamers/fnap_scc_' .. me .. '")')
-					v:SendLua([[LocalPlayer():EmitSound("fnafgm_scream")]])
-					v:TakeDamage(100, self)
-
-				end
-
-			end
-
-			GAMEMODE:Log("Jumpscared by " .. GAMEMODE.AnimatronicName[me])
-
-		elseif me == GAMEMODE.Animatronic.Rarity and !GAMEMODE.Vars.DoorClosed[1] then
-
-			for k, v in pairs(player.GetAll()) do
+			for _, v in pairs(player.GetAll()) do
 
 				if v:Alive() and v.IsOnSecurityRoom then
 
@@ -951,11 +939,11 @@ function fnapgmJumpscare(me, self)
 
 			end
 
-			GAMEMODE:Log("Jumpscared by " .. GAMEMODE.AnimatronicName[me])
+			gm:Log("Jumpscared by " .. gm.AnimatronicName[me])
 
-		elseif me == GAMEMODE.Animatronic.Applejack and GAMEMODE.Vars.LightUse[3] then
+		elseif me == gm.Animatronic.Twilight and not gm.Vars.DoorClosed[2] then
 
-			for k, v in pairs(player.GetAll()) do
+			for _, v in pairs(player.GetAll()) do
 
 				if v:Alive() and v.IsOnSecurityRoom then
 
@@ -967,11 +955,43 @@ function fnapgmJumpscare(me, self)
 
 			end
 
-			GAMEMODE:Log("Jumpscared by " .. GAMEMODE.AnimatronicName[me])
+			gm:Log("Jumpscared by " .. gm.AnimatronicName[me])
 
-			elseif me == GAMEMODE.Animatronic.RainbowDash and !GAMEMODE.Vars.DoorClosed[2] then
+		elseif me == gm.Animatronic.Rarity and not gm.Vars.DoorClosed[1] then
 
-				for k, v in pairs(player.GetAll()) do
+			for _, v in pairs(player.GetAll()) do
+
+				if v:Alive() and v.IsOnSecurityRoom then
+
+					v:SendLua('GAMEMODE:JumpscareOverlay("fnapgm/screamers/fnap_scc_' .. me .. '")')
+					v:SendLua([[LocalPlayer():EmitSound("fnafgm_scream")]])
+					v:TakeDamage(100, self)
+
+				end
+
+			end
+
+			gm:Log("Jumpscared by " .. gm.AnimatronicName[me])
+
+		elseif me == gm.Animatronic.Applejack and gm.Vars.LightUse[3] then
+
+			for _, v in pairs(player.GetAll()) do
+
+				if v:Alive() and v.IsOnSecurityRoom then
+
+					v:SendLua('GAMEMODE:JumpscareOverlay("fnapgm/screamers/fnap_scc_' .. me .. '")')
+					v:SendLua([[LocalPlayer():EmitSound("fnafgm_scream")]])
+					v:TakeDamage(100, self)
+
+				end
+
+			end
+
+			gm:Log("Jumpscared by " .. gm.AnimatronicName[me])
+
+			elseif me == gm.Animatronic.RainbowDash and not gm.Vars.DoorClosed[2] then
+
+				for _, v in pairs(player.GetAll()) do
 
 					if v:Alive() and v.IsOnSecurityRoom then
 
@@ -983,38 +1003,38 @@ function fnapgmJumpscare(me, self)
 
 				end
 
-				GAMEMODE:Log("Jumpscared by " .. GAMEMODE.AnimatronicName[me])
+				gm:Log("Jumpscared by " .. gm.AnimatronicName[me])
 
-		elseif me == GAMEMODE.Animatronic.RainbowDash then
+		elseif me == gm.Animatronic.RainbowDash then
 
-			for k, v in pairs(player.GetAll()) do
+			for _, v in pairs(player.GetAll()) do
 
 				v:SendLua([[LocalPlayer():EmitSound("fnapgm_rainbowknock")]])
 
 			end
 
-			if !fnafgm_disablepower:GetBool() then
+			if not fnafgm_disablepower:GetBool() then
 
-				GAMEMODE.Vars.power = GAMEMODE.Vars.power - GAMEMODE.Vars.foxyknockdoorpena
-				GAMEMODE:Log(GAMEMODE.AnimatronicName[me] .. " removed " .. GAMEMODE.Vars.foxyknockdoorpena .. "% of the power")
+				gm.Vars.power = gm.Vars.power - gm.Vars.foxyknockdoorpena
+				gm:Log(gm.AnimatronicName[me] .. " removed " .. gm.Vars.foxyknockdoorpena .. "% of the power")
 				fnafgmPowerUpdate()
-				if GAMEMODE.Vars.foxyknockdoorpena <= 10 then GAMEMODE.Vars.foxyknockdoorpena = GAMEMODE.Vars.foxyknockdoorpena + GAMEMODE.Vars.addfoxyknockdoorpena end
+				if gm.Vars.foxyknockdoorpena <= 10 then gm.Vars.foxyknockdoorpena = gm.Vars.foxyknockdoorpena + gm.Vars.addfoxyknockdoorpena end
 
 				end
 
 			end
 
-		if me == GAMEMODE.Animatronic.RainbowDash then
+		if me == gm.Animatronic.RainbowDash then
 
 			timer.Create("fnafgmFoxyReset", 1, 1, function()
-				self:SetPos(GAMEMODE.AnimatronicAPos[me][game.GetMap()][GAMEMODE.APos[game.GetMap()].Trash][1])
-				self:SetAngles(GAMEMODE.AnimatronicAPos[me][game.GetMap()][GAMEMODE.APos[game.GetMap()].Trash][2])
-				GAMEMODE:SetAnimatronicPos(nil,me,GAMEMODE.APos[game.GetMap()].Trash)
+				self:SetPos(gm.AnimatronicAPos[me][map][gm.APos[map].Trash][1])
+				self:SetAngles(gm.AnimatronicAPos[me][map][gm.APos[map].Trash][2])
+				gm:SetAnimatronicPos(nil,me,gm.APos[map].Trash)
 				timer.Remove("fnafgmFoxyReset")
 			end)
 
 		else
-			GAMEMODE:SetAnimatronicPos(nil, me, GAMEMODE.APos[game.GetMap()].SS)
+			gm:SetAnimatronicPos(nil, me, gm.APos[map].SS)
 		end
 
 	end
@@ -1027,29 +1047,32 @@ hook.Add("fnafgmCustomJumpscare", "fnapgmJumpscare", fnapgmJumpscare)
 
 function fnapgmAutoMove(a)
 
-	if game.GetMap() == "fnap_scc" and a == GAMEMODE.Animatronic.Rarity then
+	local gm = GAMEMODE
+	local map = game.GetMap()
+
+	if map == "fnap_scc" and a == gm.Animatronic.Rarity then
 
 		local apos
 
-		if GAMEMODE.Vars.Animatronics[a][2] == GAMEMODE.APos.fnap_scc.SS then
-			apos = GAMEMODE.APos.fnap_scc.Entrance
-		elseif GAMEMODE.Vars.Animatronics[a][2] == GAMEMODE.APos.fnap_scc.Entrance then
-			apos = GAMEMODE.APos.fnap_scc.EntranceD
-		elseif GAMEMODE.Vars.Animatronics[a][2] == GAMEMODE.APos.fnap_scc.EntranceD then
-			apos = GAMEMODE.APos.fnap_scc.DA
-		elseif GAMEMODE.Vars.Animatronics[a][2] == GAMEMODE.APos.fnap_scc.DA then
-			apos = GAMEMODE.APos.fnap_scc.StaffD
-		elseif GAMEMODE.Vars.Animatronics[a][2] == GAMEMODE.APos.fnap_scc.StaffD then
-			apos = GAMEMODE.APos.fnap_scc.Staff
-		elseif GAMEMODE.Vars.Animatronics[a][2] == GAMEMODE.APos.fnap_scc.Staff then
-			apos = GAMEMODE.APos.fnap_scc.Office
+		if gm.Vars.Animatronics[a][2] == gm.APos.fnap_scc.SS then
+			apos = gm.APos.fnap_scc.Entrance
+		elseif gm.Vars.Animatronics[a][2] == gm.APos.fnap_scc.Entrance then
+			apos = gm.APos.fnap_scc.EntranceD
+		elseif gm.Vars.Animatronics[a][2] == gm.APos.fnap_scc.EntranceD then
+			apos = gm.APos.fnap_scc.DA
+		elseif gm.Vars.Animatronics[a][2] == gm.APos.fnap_scc.DA then
+			apos = gm.APos.fnap_scc.StaffD
+		elseif gm.Vars.Animatronics[a][2] == gm.APos.fnap_scc.StaffD then
+			apos = gm.APos.fnap_scc.Staff
+		elseif gm.Vars.Animatronics[a][2] == gm.APos.fnap_scc.Staff then
+			apos = gm.APos.fnap_scc.Office
 		end
 
 		return apos
 
-	elseif a == GAMEMODE.Animatronic.Pinkie then
+	elseif a == gm.Animatronic.Pinkie then
 
-		GAMEMODE.Vars.Animatronics[a][1]:Taunt()
+		gm.Vars.Animatronics[a][1]:Taunt()
 
 	end
 

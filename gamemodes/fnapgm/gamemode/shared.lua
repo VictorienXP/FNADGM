@@ -81,17 +81,17 @@ GM.Sound_Animatronic[11] = { Sound("fnapgm/laught1.ogg"), Sound("fnapgm/laught2.
 
 GM.SecurityRoom = {
 	fnap_scc = { Vector(-510,-372,26), Vector(-334,-125,170), Vector(-510,-258,26), Vector(-195,-125,170) },
-	fnap_cb = { Vector(144,-80,339), Vector(337,-319,210) }
+	fnap_cb = { Vector(144,-80,339), Vector(337,-319,210) },
 }
 
 GM.DeadBodiesTeleport = {
 	fnap_scc = { Vector(200, 432, 96) },
-	fnap_cb = { Vector(177, -224, 144) }
+	fnap_cb = { Vector(177, -224, 144) },
 }
 
 GM.FNaFView = {
 	fnap_scc = { Vector( -465, -255, 32 ), Angle( 0, 0, 0 ), Angle( 0, 58, 0 ), Angle( 0, -58, 0 ) },
-	fnap_cb = { Vector( 256, -272, 208 ), Angle( 0, 90, 0 ), Angle( 0, 128, 0 ), Angle( 0, 50, 0 ) }
+	fnap_cb = { Vector( 256, -272, 208 ), Angle( 0, 90, 0 ), Angle( 0, 128, 0 ), Angle( 0, 50, 0 ) },
 }
 
 GM.Models_dead = {}
@@ -126,12 +126,12 @@ GM.CamsNames = {
 	fnap_cb_8 = "Rarity's Bedroom",
 	fnap_cb_9 = "Left Vent",
 	fnap_cb_10 = "Right Vent",
-	fnap_cb_11 = "Office"
+	fnap_cb_11 = "Office",
 }
 
 GM.MapList = {
 	fnap_scc = "Sugar Cube Corner",
-	fnap_cb = "Carousel Boutique"
+	fnap_cb = "Carousel Boutique",
 }
 
 GM.MapListLinks = {
@@ -150,6 +150,8 @@ GM.Animatronic.ToyFluttershy = 18
 GM.Animatronic.ToyTwilight = 19
 GM.Animatronic.Discord = 20
 GM.Animatronic.Spike = 21
+GM.Animatronic.ToyRarity = 22
+GM.Animatronic.ToyApplejack = 23
 
 GM.AnimatronicName = {}
 GM.AnimatronicName[11] = "Pinkie Pie"
@@ -163,21 +165,38 @@ GM.AnimatronicName[18] = "Toy Fluttershy"
 GM.AnimatronicName[19] = "Toy Twilight"
 GM.AnimatronicName[20] = "Discord"
 GM.AnimatronicName[21] = "Spike"
+GM.AnimatronicName[22] = "Toy Rarity"
+GM.AnimatronicName[23] = "Toy Applejack"
 
 GM.Animatronic_Models = {}
 GM.Animatronic_Models[GM.Animatronic.Pinkie] = {}
 GM.Animatronic_Models[GM.Animatronic.Pinkie].fnap_scc = Model("models/wubsy/pinkie_pie.mdl")
-GM.Animatronic_Models[GM.Animatronic.Pinkie].fnap_cb = Model("models/brokenmlpanimatronics/pinkie_pie.mdl")
 GM.Animatronic_Models[GM.Animatronic.Fluttershy] = {}
 GM.Animatronic_Models[GM.Animatronic.Fluttershy].fnap_scc = Model("models/wubsy/fluttershy.mdl")
 GM.Animatronic_Models[GM.Animatronic.Twilight] = {}
 GM.Animatronic_Models[GM.Animatronic.Twilight].fnap_scc = Model("models/wubsy/twilight.mdl")
 GM.Animatronic_Models[GM.Animatronic.Rarity] = {}
 GM.Animatronic_Models[GM.Animatronic.Rarity].fnap_scc = Model("models/wubsy/rarity.mdl")
+GM.Animatronic_Models[GM.Animatronic.Rarity].fnap_cb = Model("models/wubsy/animatronics/rarionette.mdl")
 GM.Animatronic_Models[GM.Animatronic.Applejack] = {}
 GM.Animatronic_Models[GM.Animatronic.Applejack].fnap_scc = Model("models/wubsy/appplejack.mdl")
 GM.Animatronic_Models[GM.Animatronic.RainbowDash] = {}
 GM.Animatronic_Models[GM.Animatronic.RainbowDash].fnap_scc = Model("models/wubsy/rainbow_dash.mdl")
+GM.Animatronic_Models[GM.Animatronic.RainbowDash].fnap_cb = Model("models/wubsy/animatronics/rainbow_dash.mdl")
+GM.Animatronic_Models[GM.Animatronic.ToyPinkie] = {}
+GM.Animatronic_Models[GM.Animatronic.ToyPinkie].fnap_cb = Model("models/wubsy/animatronics/pinkiepie.mdl")
+GM.Animatronic_Models[GM.Animatronic.ToyFluttershy] = {}
+GM.Animatronic_Models[GM.Animatronic.ToyFluttershy].fnap_cb = Model("models/wubsy/animatronics/fluttershy.mdl")
+GM.Animatronic_Models[GM.Animatronic.ToyTwilight] = {}
+GM.Animatronic_Models[GM.Animatronic.ToyTwilight].fnap_cb = Model("models/wubsy/animatronics/twilight.mdl")
+GM.Animatronic_Models[GM.Animatronic.Discord] = {}
+GM.Animatronic_Models[GM.Animatronic.Discord].fnap_cb = Model("models/wubsy/animatronics/discord.mdl")
+GM.Animatronic_Models[GM.Animatronic.Spike] = {}
+GM.Animatronic_Models[GM.Animatronic.Spike].fnap_cb = Model("models/wubsy/animatronics/spike.mdl")
+GM.Animatronic_Models[GM.Animatronic.ToyRarity] = {}
+GM.Animatronic_Models[GM.Animatronic.ToyRarity].fnap_cb = Model("models/wubsy/animatronics/rarity.mdl")
+GM.Animatronic_Models[GM.Animatronic.ToyApplejack] = {}
+GM.Animatronic_Models[GM.Animatronic.ToyApplejack].fnap_cb = Model("models/wubsy/animatronics/applejack.mdl")
 
 GM.APos = {}
 GM.APos.fnap_scc = {
@@ -199,7 +218,7 @@ GM.APos.fnap_scc = {
 	StaffD = 17,
 	Staff = 18,
 	Kitchen2 = 19,
-	EntranceD = 20
+	EntranceD = 20,
 }
 GM.APos.fnap_cb = {
 	SS = 1,
@@ -212,7 +231,7 @@ GM.APos.fnap_cb = {
 	Rarity = 8,
 	LV = 9,
 	RV = 10,
-	Office = 11
+	Office = 11,
 }
 
 GM.ASSEye = {}
@@ -480,61 +499,64 @@ end
 
 function fnapgmAnimatronicMove(self, me, apos)
 
-	if apos != nil and self.OldAPos != apos then
+	local gm = GAMEMODE
+	local map = game.GetMap()
+
+	if apos ~= nil and self.OldAPos ~= apos then
 
 		self.OldAPos = apos
 
-		if me != GAMEMODE.Animatronic.RainbowDash then
+		if me ~= gm.Animatronic.RainbowDash then
 
 			self:SetColor(Color(255, 255, 255, 0))
 
-			if GAMEMODE.AnimatronicAPos[me] and GAMEMODE.AnimatronicAPos[me][game.GetMap()] and GAMEMODE.AnimatronicAPos[me][game.GetMap()][apos] then
-				self:SetPos(GAMEMODE.AnimatronicAPos[me][game.GetMap()][apos][1])
-				self:SetAngles(GAMEMODE.AnimatronicAPos[me][game.GetMap()][apos][2])
+			if gm.AnimatronicAPos[me] and gm.AnimatronicAPos[me][map] and gm.AnimatronicAPos[me][map][apos] then
+				self:SetPos(gm.AnimatronicAPos[me][map][apos][1])
+				self:SetAngles(gm.AnimatronicAPos[me][map][apos][2])
 			end
 
 			self:SetColor(Color(255, 255, 255, 255))
 
 		end
 
-	elseif me == GAMEMODE.Animatronic.RainbowDash and apos == GAMEMODE.APos[game.GetMap()].Office and self.FoxyWillMove2 then
+	elseif me == gm.Animatronic.RainbowDash and apos == gm.APos[map].Office and self.FoxyWillMove2 then
 
-		if !self.preltime or self.preltime < 1 then
+		if not self.preltime or self.preltime < 1 then
 			self.preltime = (self.preltime or 0) + FrameTime()
-		elseif !self.preltime or self.preltime >= 1 then
+		elseif not self.preltime or self.preltime >= 1 then
 			self.preltime = 0
 			self.presta = true
 		end
 
-		if !self.presta then
-			self:SetPos(LerpVector(self.preltime, GAMEMODE.AnimatronicAPos[me][game.GetMap()][apos][1], Vector(417.923, -388.438, -95.7159)))
-			self:SetAngles(LerpAngle(self.preltime, GAMEMODE.AnimatronicAPos[me][game.GetMap()][apos][2], Angle(0, 120, 0)))
+		if not self.presta then
+			self:SetPos(LerpVector(self.preltime, gm.AnimatronicAPos[me][map][apos][1], Vector(417.923, -388.438, -95.7159)))
+			self:SetAngles(LerpAngle(self.preltime, gm.AnimatronicAPos[me][map][apos][2], Angle(0, 120, 0)))
 		else
 			self:SetPos(Vector(417.923, -388.438, -95.7159))
 		end
 
-		if self:GetSequence() != self:LookupSequence(GAMEMODE.AnimatronicsAnim[me][game.GetMap()][GAMEMODE.APos.fnap_scc.Office]) then
-			self:SetSequence(self:LookupSequence(GAMEMODE.AnimatronicsAnim[me][game.GetMap()][GAMEMODE.APos.fnap_scc.Office]))
+		if self:GetSequence() ~= self:LookupSequence(gm.AnimatronicsAnim[me][map][gm.APos.fnap_scc.Office]) then
+			self:SetSequence(self:LookupSequence(gm.AnimatronicsAnim[me][map][gm.APos.fnap_scc.Office]))
 			self:ResetSequenceInfo()
 			self:SetCycle(0)
 			self:SetPlaybackRate(0)
 		end
 
-	elseif me == GAMEMODE.Animatronic.RainbowDash and apos == GAMEMODE.APos[game.GetMap()].Office and self.FoxyWillMove then
+	elseif me == gm.Animatronic.RainbowDash and apos == gm.APos[map].Office and self.FoxyWillMove then
 
-		if self:GetColor() != Color(255, 255, 255, 255) then self:SetColor(Color(255, 255, 255, 255)) end
+		if self:GetColor() ~= Color(255, 255, 255, 255) then self:SetColor(Color(255, 255, 255, 255)) end
 
-		if self:GetSequence() != self:LookupSequence(GAMEMODE.AnimatronicsAnim[me][game.GetMap()][GAMEMODE.APos.fnap_scc.Trash]) then
-			self:SetSequence(self:LookupSequence(GAMEMODE.AnimatronicsAnim[me][game.GetMap()][GAMEMODE.APos.fnap_scc.Trash]))
+		if self:GetSequence() ~= self:LookupSequence(gm.AnimatronicsAnim[me][map][gm.APos.fnap_scc.Trash]) then
+			self:SetSequence(self:LookupSequence(gm.AnimatronicsAnim[me][map][gm.APos.fnap_scc.Trash]))
 			self:ResetSequenceInfo()
 			self:SetCycle(0)
 		end
 
-	elseif me == GAMEMODE.Animatronic.RainbowDash and apos == GAMEMODE.APos[game.GetMap()].Office and self.FoxyMove2 then
+	elseif me == gm.Animatronic.RainbowDash and apos == gm.APos[map].Office and self.FoxyMove2 then
 
-		if self:GetColor() != Color(255, 255, 255, 255) then self:SetColor(Color(255, 255, 255, 255)) end
+		if self:GetColor() ~= Color(255, 255, 255, 255) then self:SetColor(Color(255, 255, 255, 255)) end
 
-		if !self.ltime or self.ltime < 1 then
+		if not self.ltime or self.ltime < 1 then
 			local multip = 1
 			if self.sta == 3 then
 				multip = 0.6
@@ -542,12 +564,12 @@ function fnapgmAnimatronicMove(self, me, apos)
 				multip = 1.4
 			end
 			self.ltime = (self.ltime or 0) + FrameTime() * multip
-		elseif !self.ltime or self.ltime >= 1 then
+		elseif not self.ltime or self.ltime >= 1 then
 			self.ltime = 0
 			self.sta = (self.sta or 0) + 1
 		end
 
-		if !self.sta or self.sta == 0 then
+		if not self.sta or self.sta == 0 then
 			self:SetPos(LerpVector(self.ltime, Vector(417.923, -388.438, -95.7159), Vector(323, -186.201813, -89.016739)))
 			self:SetAngles(LerpAngle(self.ltime, Angle(0, 120, 0), Angle(0, 90, 0)))
 			self:SetPlaybackRate(1)
@@ -567,7 +589,7 @@ function fnapgmAnimatronicMove(self, me, apos)
 			self:SetPos(LerpVector(self.ltime, Vector(-137.194016, -8.655641, 32), Vector(-385.440521, -42.308228, 32)))
 			self:SetAngles(LerpAngle(self.ltime, Angle(0, -180, 0), Angle(0, -150, 0)))
 			self:SetPlaybackRate(1)
-			if self:GetSkin() != 2 then self:SetSkin(2) end
+			if self:GetSkin() ~= 2 then self:SetSkin(2) end
 			self:SetFlexWeight(0, Lerp(self.ltime, 0, 1))
 		elseif self.sta == 5 then
 			self:SetPos(LerpVector(self.ltime, Vector(-385.440521, -42.308228, 32), Vector(-431.247833, -95, 32)))
@@ -579,14 +601,14 @@ function fnapgmAnimatronicMove(self, me, apos)
 			self:SetPlaybackRate(0.1)
 		end
 
-	elseif me == GAMEMODE.Animatronic.RainbowDash and apos == GAMEMODE.APos[game.GetMap()].Trash then
+	elseif me == gm.Animatronic.RainbowDash and apos == gm.APos[map].Trash then
 
-		if self:GetColor() != Color(255, 255, 255, 0) then self:SetColor(Color(255, 255, 255, 0)) end
+		if self:GetColor() ~= Color(255, 255, 255, 0) then self:SetColor(Color(255, 255, 255, 0)) end
 
-		if !self.sta or self.sta > 0 then self.sta = 0 end
+		if not self.sta or self.sta > 0 then self.sta = 0 end
 		if self.presta then self.presta = false end
 
-	elseif me == GAMEMODE.Animatronic.Twilight and (apos == GAMEMODE.APos[game.GetMap()].Office or apos == GAMEMODE.APos[game.GetMap()].Kitchen or apos == GAMEMODE.APos[game.GetMap()].Kitchen2) then
+	elseif me == gm.Animatronic.Twilight and (apos == gm.APos[map].Office or apos == gm.APos[map].Kitchen or apos == gm.APos[map].Kitchen2) then
 
 		self:SetSkin(math.random(0, 1))
 
@@ -597,7 +619,7 @@ function fnapgmAnimatronicMove(self, me, apos)
 end
 hook.Add("fnafgmAnimatronicMove", "fnapgmAnimatronicMove", fnapgmAnimatronicMove)
 
-if !(GM or GAMEMODE).IsFNAFGMDerived and !BaseClass.IsFNAFGMDerived then
+if not (GM or GAMEMODE).IsFNAFGMDerived and not BaseClass.IsFNAFGMDerived then
 
 	local no_fnafgm_msg_error	=	"FNAFGM is not loaded!\n"
 	local no_fnafgm_msg			=	no_fnafgm_msg_error ..
@@ -606,7 +628,7 @@ if !(GM or GAMEMODE).IsFNAFGMDerived and !BaseClass.IsFNAFGMDerived then
 
 	hook.Add("PlayerSpawn", "fnafgm_not_loaded_warning", function()
 
-		if !GAMEMODE.IsFNAFGMDerived then
+		if not GAMEMODE.IsFNAFGMDerived then
 
 			PrintMessage(HUD_PRINTTALK, no_fnafgm_msg)
 
@@ -618,7 +640,7 @@ if !(GM or GAMEMODE).IsFNAFGMDerived and !BaseClass.IsFNAFGMDerived then
 
 	hook.Add("HUDPaint", "fnafgm_not_loaded_warning_hud", function()
 
-		if !GAMEMODE.IsFNAFGMDerived then
+		if not GAMEMODE.IsFNAFGMDerived then
 
 			draw.DrawText(no_fnafgm_msg, "DermaLarge", ScrW() * .5, ScrH() * .5 + 8, Color(255, 0, 0, 255), TEXT_ALIGN_CENTER)
 

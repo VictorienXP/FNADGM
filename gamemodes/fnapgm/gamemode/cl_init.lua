@@ -5,26 +5,30 @@
 
 -----------------------------------------------------------]]
 
-include('shared.lua')
+include("shared.lua")
 DeriveGamemode("fnafgm")
 
 function fnapgmSecurityTabletInit(control)
 
-	if game.GetMap() == "fnap_scc" then
-		if !GAMEMODE.Vars.lastcam then
-			GAMEMODE.Vars.lastcam = 2
+	local gvars = GAMEMODE.Vars
+	local map = game.GetMap()
+	local ply = LocalPlayer()
+
+	if map == "fnap_scc" then
+		if not gvars.lastcam then
+			gvars.lastcam = 2
 		end
-		if !control then LocalPlayer():EmitSound("fnafgm_campop") end
-	elseif game.GetMap() == "fnap_cb" then
-		if !GAMEMODE.Vars.lastcam then
-			GAMEMODE.Vars.lastcam = 1
+		if not control then ply:EmitSound("fnafgm_campop") end
+	elseif map == "fnap_cb" then
+		if not gvars.lastcam then
+			gvars.lastcam = 1
 		end
-		if !control then LocalPlayer():EmitSound("fnafgm_campop2") end
+		if not control then ply:EmitSound("fnafgm_campop2") end
 	else
-		if !GAMEMODE.Vars.lastcam then
-			GAMEMODE.Vars.lastcam = 1
+		if not gvars.lastcam then
+			gvars.lastcam = 1
 		end
-		if !control then LocalPlayer():EmitSound("fnafgm_campop") end
+		if not control then ply:EmitSound("fnafgm_campop") end
 	end
 
 	return true
@@ -34,32 +38,37 @@ hook.Add("fnafgmSecurityTabletCustomInit", "fnapgmSecurityTabletInit", fnapgmSec
 
 function fnapgmSecurityTablet(control)
 
-	if game.GetMap() == "fnap_scc" then
+	local gvars = GAMEMODE.Vars
+	local ply = LocalPlayer()
+	local map = game.GetMap()
+	local mon = gvars.Monitor
 
-		if !control then
+	if map == "fnap_scc" then
+
+		if not control then
 
 			local closebtnsizew = (512 * (ScrH() / 480)) / 2
 			local closebtnsizeh = (60 * (ScrH() / 480)) / 2
 
 			CloseT = vgui.Create("DButton")
-			CloseT:SetParent(GAMEMODE.Vars.Monitor)
+			CloseT:SetParent(mon)
 			CloseT:SetSize(closebtnsizew, closebtnsizeh)
 			CloseT:SetPos(ScrW() / 2 - closebtnsizew / 2, ScrH() - closebtnsizeh - 50)
 			CloseT:SetText("")
 			CloseT.DoClick = function(button)
 				if IsValid(FNaFView) then waitt = CurTime() + 1 end
-				GAMEMODE.Vars.Monitor:Close()
-				LocalPlayer():EmitSound("fnafgm_camdown")
+				mon:Close()
+				ply:EmitSound("fnafgm_camdown")
 				if IsValid(OpenT) then OpenT:Show() end
 				if IsValid(lightroom) then lightroom:Show() end
 			end
 			CloseT.OnCursorEntered = function()
 				if IsValid(FNaFView) then
-					if !waitt then waitt = 0 end
+					if not waitt then waitt = 0 end
 					if waitt < CurTime() then
 						waitt = CurTime() + 0.5
-						GAMEMODE.Vars.Monitor:Close()
-						LocalPlayer():EmitSound("fnafgm_camdown")
+						mon:Close()
+						ply:EmitSound("fnafgm_camdown")
 						if IsValid(OpenT) then OpenT:Show() end
 						if IsValid(lightroom) then lightroom:Show() end
 					end
@@ -83,9 +92,9 @@ function fnapgmSecurityTablet(control)
 
 			end
 
-			if !GAMEMODE.Vars.mute then
+			if not gvars.mute then
 				local MUTET = vgui.Create("DImage")
-				MUTET:SetParent(GAMEMODE.Vars.Monitor)
+				MUTET:SetParent(mon)
 				MUTET:SetImage("fnafgm/mute")
 				MUTET:SetSize(128, 32)
 				MUTET:SetPos(64, 64)
@@ -105,50 +114,152 @@ function fnapgmSecurityTablet(control)
 				end
 			end
 
-			GAMEMODE.Vars.Monitor.Map:SetImage("fnapgm/maps/fnap_scc_1")
+			mon.Map:SetImage("fnapgm/maps/fnap_scc_1")
 
 		else
-			GAMEMODE.Vars.Monitor.Map:SetImage("fnapgm/maps/fnap_scc_1_sgvsa")
+			mon.Map:SetImage("fnapgm/maps/fnap_scc_1_sgvsa")
 		end
 
-		GAMEMODE.Vars.Monitor.Map2:SetImage("fnapgm/maps/fnap_scc_2")
+		mon.Map2:SetImage("fnapgm/maps/fnap_scc_2")
 
-		if !control then
-			GAMEMODE.Vars.Monitor:CreateButton(1,GAMEMODE.Vars.Monitor.Map,91,224,78.5,48.5,2.5)
+		if not control then
+			mon:CreateButton(1,mon.Map,91,224,78.5,48.5,2.5)
 		else
-			GAMEMODE.Vars.Monitor:CreateButton(1,GAMEMODE.Vars.Monitor.Map,116.5, 224,78.5,48.5,2.5)
+			mon:CreateButton(1,mon.Map,116.5, 224,78.5,48.5,2.5)
 		end
-		GAMEMODE.Vars.Monitor:CreateButton(2,GAMEMODE.Vars.Monitor.Map,206,229.5,78.5,48.5,2.5)
-		GAMEMODE.Vars.Monitor:CreateButton(3,GAMEMODE.Vars.Monitor.Map,206,334,78.5,48.5,2.5)
-		GAMEMODE.Vars.Monitor:CreateButton(4,GAMEMODE.Vars.Monitor.Map,312,387,78.5,48.5,2.5)
-		GAMEMODE.Vars.Monitor:CreateButton(5,GAMEMODE.Vars.Monitor.Map,354,281.5,78.5,48.5,2.5)
-		GAMEMODE.Vars.Monitor:CreateButton(6,GAMEMODE.Vars.Monitor.Map,354,151,78.5,48.5,2.5)
-		GAMEMODE.Vars.Monitor:CreateButton(7,GAMEMODE.Vars.Monitor.Map,20.5,162.5,78.5,48.5,2.5)
-		GAMEMODE.Vars.Monitor:CreateButton(8,GAMEMODE.Vars.Monitor.Map,91,92.5,78.5,48.5,2.5)
-		GAMEMODE.Vars.Monitor:CreateButton(9,GAMEMODE.Vars.Monitor.Map,192.5,92.5,78.5,48.5,2.5)
-		GAMEMODE.Vars.Monitor:CreateButton(10,GAMEMODE.Vars.Monitor.Map,293,92,78.5,48.5,2.5)
-		GAMEMODE.Vars.Monitor:CreateButton(11,GAMEMODE.Vars.Monitor.Map2,380,325.5,78.5,48.5,2.5)
-		GAMEMODE.Vars.Monitor:CreateButton(12,GAMEMODE.Vars.Monitor.Map2,315.5,268.5,78.5,48.5,2.5)
-		GAMEMODE.Vars.Monitor:CreateButton(13,GAMEMODE.Vars.Monitor.Map2,222,140,78.5,48.5,2.5)
-		GAMEMODE.Vars.Monitor:CreateButton(14,GAMEMODE.Vars.Monitor.Map2,57,225.5,78.5,48.5,2.5)
+		mon:CreateButton(2,mon.Map,206,229.5,78.5,48.5,2.5)
+		mon:CreateButton(3,mon.Map,206,334,78.5,48.5,2.5)
+		mon:CreateButton(4,mon.Map,312,387,78.5,48.5,2.5)
+		mon:CreateButton(5,mon.Map,354,281.5,78.5,48.5,2.5)
+		mon:CreateButton(6,mon.Map,354,151,78.5,48.5,2.5)
+		mon:CreateButton(7,mon.Map,20.5,162.5,78.5,48.5,2.5)
+		mon:CreateButton(8,mon.Map,91,92.5,78.5,48.5,2.5)
+		mon:CreateButton(9,mon.Map,192.5,92.5,78.5,48.5,2.5)
+		mon:CreateButton(10,mon.Map,293,92,78.5,48.5,2.5)
+		mon:CreateButton(11,mon.Map2,380,325.5,78.5,48.5,2.5)
+		mon:CreateButton(12,mon.Map2,315.5,268.5,78.5,48.5,2.5)
+		mon:CreateButton(13,mon.Map2,222,140,78.5,48.5,2.5)
+		mon:CreateButton(14,mon.Map2,57,225.5,78.5,48.5,2.5)
 		if control then
-			GAMEMODE.Vars.Monitor:CreateButton(16,GAMEMODE.Vars.Monitor.Map,22,315,78.5,48.5,2.5)
-			GAMEMODE.Vars.Monitor:CreateButton(17,GAMEMODE.Vars.Monitor.Map,138,429,78.5,48.5,2.5)
-			GAMEMODE.Vars.Monitor:CreateButton(18,GAMEMODE.Vars.Monitor.Map,53,429,78.5,48.5,2.5)
-			GAMEMODE.Vars.Monitor:CreateButton(19,GAMEMODE.Vars.Monitor.Map,22,224,78.5,48.5,2.5)
-			GAMEMODE.Vars.Monitor:CreateButton(20,GAMEMODE.Vars.Monitor.Map,223,429,78.5,48.5,2.5)
+			mon:CreateButton(16,mon.Map,22,315,78.5,48.5,2.5)
+			mon:CreateButton(17,mon.Map,138,429,78.5,48.5,2.5)
+			mon:CreateButton(18,mon.Map,53,429,78.5,48.5,2.5)
+			mon:CreateButton(19,mon.Map,22,224,78.5,48.5,2.5)
+			mon:CreateButton(20,mon.Map,223,429,78.5,48.5,2.5)
 		end
 
 		local Unknown = vgui.Create("DButton")
-		Unknown:SetParent(GAMEMODE.Vars.Monitor.Map2)
+		Unknown:SetParent(mon.Map2)
 		Unknown:SetSize(4, 4)
 		Unknown:SetPos(237, 298)
 		Unknown:SetText("")
 		Unknown.DoClick = function(button)
-			LocalPlayer():EmitSound("fnafgm_camselect")
-			GAMEMODE.Vars.lastcam = 15
-			fnafgmSetView(GAMEMODE.Vars.lastcam)
-			GAMEMODE.Vars.Monitor.CamsNames:SetText(GAMEMODE.CamsNames["fnap_scc_" .. GAMEMODE.Vars.lastcam] or "")
+			ply:EmitSound("fnafgm_camselect")
+			gvars.lastcam = 15
+			fnafgmSetView(gvars.lastcam)
+			mon.CamsNames:SetText(GAMEMODE.CamsNames["fnap_scc_" .. gvars.lastcam] or "")
+		end
+		Unknown.Paint = function(self, w, h)
+
+		end
+
+	elseif map == "fnap_cb" then
+
+		if not control then
+
+			CloseT = vgui.Create("DButton")
+			CloseT:SetParent(mon)
+			CloseT:SetSize(512, 80)
+			CloseT:SetPos(ScrW() / 2 - 256, ScrH() - 80 - 50)
+			CloseT:SetText("")
+			CloseT.DoClick = function(button)
+				if IsValid(FNaFView) then waitt = CurTime() + 1 end
+				mon:Close()
+				ply:EmitSound("fnafgm_camdown")
+				if IsValid(OpenT) then OpenT:Show() end
+				if IsValid(lightroom) then lightroom:Show() end
+			end
+			CloseT.OnCursorEntered = function()
+				if IsValid(FNaFView) then
+					if not waitt then waitt = 0 end
+					if waitt < CurTime() then
+						waitt = CurTime() + 0.5
+						mon:Close()
+						ply:EmitSound("fnafgm_camdown")
+						if IsValid(OpenT) then OpenT:Show() end
+						if IsValid(lightroom) then lightroom:Show() end
+					end
+				end
+			end
+			CloseT.Paint = function(self, w, h)
+
+				draw.RoundedBox(0, 1, 1, w-2, h-2, Color(255, 255, 255, 32))
+
+				surface.SetDrawColor(255, 255, 255, 128)
+
+				draw.NoTexture()
+
+				surface.DrawLine(w / 2 - 64, h / 2 - 16, w / 2, h / 2)
+				surface.DrawLine(w / 2, h / 2, w / 2 + 64, h / 2 - 16)
+
+				surface.DrawLine(w / 2 - 64, h / 2- 16 + 16, w / 2, h / 2 + 16)
+				surface.DrawLine(w / 2, h / 2 + 16, w / 2 + 64, h / 2- 16 + 16)
+
+				surface.DrawOutlinedRect(0, 0, w, h)
+
+			end
+
+			if not gvars.mute then
+				local MUTET = vgui.Create("DImage")
+				MUTET:SetParent(mon)
+				MUTET:SetImage("fnafgm/mute")
+				MUTET:SetSize(128, 32)
+				MUTET:SetPos(64, 64)
+
+				local MUTEbT = vgui.Create("DButton")
+				MUTEbT:SetParent(MUTET)
+				MUTEbT:SetSize(121, 31)
+				MUTEbT:SetPos(0, 0)
+				MUTEbT:SetText("")
+				MUTEbT.DoClick = function(button)
+					fnafgmMuteCall()
+					MUTET:Remove()
+					MUTEbT:Remove()
+				end
+				MUTEbT.Paint = function(self, w, h)
+
+				end
+			end
+
+		end
+
+		mon.Map:SetImage("fnapgm/maps/fnap_cb_1")
+		mon.Map2:SetImage("fnapgm/maps/fnap_cb_2")
+
+		mon:CreateButton(1,		mon.Map,	153.5,	350,	79,		49,		2.5)
+		mon:CreateButton(2,		mon.Map,	14,		162.5,	79,		49,		2.5)
+		mon:CreateButton(3,		mon.Map,	114,	207,	79,		49,		2.5)
+		mon:CreateButton(4,		mon.Map,	217,	93.5,	79,		49,		2.5)
+		mon:CreateButton(5,		mon.Map,	320,	119.5,	79,		49,		2.5)
+		mon:CreateButton(6,		mon.Map,	312,	325.5,	79,		49,		2.5)
+		mon:CreateButton(7,		mon.Map2,	43,		154.5,	79,		49,		2.5)
+		mon:CreateButton(8,		mon.Map2,	93,		278.5,	79,		49,		2.5)
+		mon:CreateButton(9,		mon.Map2,	216,	308.5,	79,		49,		2.5)
+		mon:CreateButton(10,	mon.Map2,	409,	308.5,	79,		49,		2.5)
+		--[[if control then
+			mon:CreateButton(11,	mon.Map2,	0,	0,	79,	49,	2.5)
+		end]]
+
+		local Unknown = vgui.Create("DButton")
+		Unknown:SetParent(mon.Map2)
+		Unknown:SetSize(4, 4)
+		Unknown:SetPos(237, 298)
+		Unknown:SetText("")
+		Unknown.DoClick = function(button)
+			ply:EmitSound("fnafgm_camselect")
+			gvars.lastcam = 15
+			fnafgmSetView(gvars.lastcam)
+			mon.CamsNames:SetText(GAMEMODE.CamsNames["fnap_cb_" .. gvars.lastcam] or "")
 		end
 		Unknown.Paint = function(self, w, h)
 
@@ -157,23 +268,23 @@ function fnapgmSecurityTablet(control)
 	else
 
 		local CAM = vgui.Create( "DNumberWang" )
-		CAM:SetParent(GAMEMODE.Vars.Monitor)
+		CAM:SetParent(mon)
 		CAM:SetPos(ScrW() / 2 - 16, ScrH() - 80 - 50 - 80)
 		CAM:SetMinMax(1,table.Count(ents.FindByClass("fnafgm_camera")))
 		CAM:SetSize(34, 28)
-		CAM:SetValue(GAMEMODE.Vars.lastcam)
+		CAM:SetValue(gvars.lastcam)
 		CAM.OnValueChanged = function(val)
-			LocalPlayer():EmitSound("fnafgm_camselect")
+			ply:EmitSound("fnafgm_camselect")
 			fnafgmSetView(math.Round(val:GetValue()))
-			GAMEMODE.Vars.lastcam = val:GetValue()
-			GAMEMODE.Vars.Monitor.CamsNames:SetText("CAM" .. val:GetValue())
+			gvars.lastcam = val:GetValue()
+			mon.CamsNames:SetText("CAM" .. val:GetValue())
 		end
 
 		local closebtnsizew = (512 * (ScrH() / 480)) / 2
 		local closebtnsizeh = (60 * (ScrH() / 480)) / 2
 
 		CloseT = vgui.Create("DButton")
-		CloseT:SetParent(GAMEMODE.Vars.Monitor)
+		CloseT:SetParent(mon)
 		CloseT:SetSize(closebtnsizew, closebtnsizeh)
 		CloseT:SetPos(ScrW() / 2 - closebtnsizew / 2, ScrH() - closebtnsizeh - 50)
 		CloseT:SetText("")
@@ -181,17 +292,17 @@ function fnapgmSecurityTablet(control)
 		CloseT:SetFont("FNAFGMID")
 		CloseT.DoClick = function(button)
 			if IsValid(FNaFView) then waitt = CurTime() + 1 end
-			GAMEMODE.Vars.Monitor:Close()
-			LocalPlayer():EmitSound("fnafgm_camdown")
+			mon:Close()
+			ply:EmitSound("fnafgm_camdown")
 			if IsValid(OpenT) then OpenT:Show() end
 		end
 		CloseT.OnCursorEntered = function()
 			if IsValid(FNaFView) then
-				if !waitt then waitt = 0 end
+				if not waitt then waitt = 0 end
 				if waitt < CurTime() then
 					waitt = CurTime() + 0.5
-					GAMEMODE.Vars.Monitor:Close()
-					LocalPlayer():EmitSound("fnafgm_camdown")
+					mon:Close()
+					ply:EmitSound("fnafgm_camdown")
 					if IsValid(OpenT) then OpenT:Show() end
 				end
 			end
@@ -223,7 +334,10 @@ hook.Add("fnafgmSecurityTabletCustom", "fnapgmSecurityTablet", fnapgmSecurityTab
 
 function fnapgmFNaFViewHUD()
 
-	if game.GetMap() == "fnap_scc" then
+	local ply = LocalPlayer()
+	local map = game.GetMap()
+
+	if map == "fnap_scc" then
 
 		lightroom = vgui.Create("DButton")
 		lightroom:SetParent(FNaFView)
@@ -262,7 +376,7 @@ function fnapgmFNaFViewHUD()
 			lightroom:Hide()
 		end
 		OpenT.OnCursorEntered = function()
-			if !waitt then waitt = 0 end
+			if not waitt then waitt = 0 end
 			if waitt < CurTime() then
 				waitt = CurTime() + 0.5
 				GAMEMODE:Monitor()
@@ -288,7 +402,7 @@ function fnapgmFNaFViewHUD()
 
 		end
 
-	elseif game.GetMap() == "fnap_cb" then
+	elseif map == "fnap_cb" then
 
 		OpenT = vgui.Create("DButton")
 		OpenT:SetParent(FNaFView)
@@ -298,16 +412,16 @@ function fnapgmFNaFViewHUD()
 		OpenT.DoClick = function(button)
 			waitt = CurTime() + 1
 			GAMEMODE:Monitor()
-			LocalPlayer():EmitSound("fnafgm_campop")
+			ply:EmitSound("fnafgm_campop")
 			OpenT:Hide()
 			--SafeE:Hide()
 		end
 		OpenT.OnCursorEntered = function()
-			if !waitt then waitt = 0 end
+			if not waitt then waitt = 0 end
 			if waitt < CurTime() then
 				waitt = CurTime() + 0.5
 				GAMEMODE:Monitor()
-				LocalPlayer():EmitSound("fnafgm_campop")
+				ply:EmitSound("fnafgm_campop")
 				OpenT:Hide()
 				--SafeE:Hide()
 			end
@@ -345,7 +459,7 @@ function fnapgmMenu()
 	questionbtn:SetPos(10, 185)
 	questionbtn:SetSize(140, 20)
 	questionbtn.DoClick = function()
-		gui.OpenURL("https://steamcommunity.com/workshop/filedetails/discussion/542710334/490123938445012064/")
+		gui.OpenURL("https://github.com/Xperidia/FNAPGM/wiki/FAQ")
 		fnafgmMenuF:Close()
 	end
 
@@ -364,19 +478,23 @@ hook.Add("fnafgmMenuCustom", "fnapgmMenu", fnapgmMenu)
 
 function fnapgmPreventAnimatronicMove(a, apos)
 
-	if game.GetMap() == "fnap_scc" and a == GAMEMODE.Animatronic.Rarity then
+	local gvars = GAMEMODE.Vars
+	local gapos = GAMEMODE.APos
+	local map = game.GetMap()
 
-		if GAMEMODE.Vars.Animatronics[a][2] == GAMEMODE.APos.fnap_scc.SS and apos == GAMEMODE.APos.fnap_scc.Entrance then
+	if map == "fnap_scc" and a == GAMEMODE.Animatronic.Rarity then
+
+		if gvars.Animatronics[a][2] == gapos.fnap_scc.SS and apos == gapos.fnap_scc.Entrance then
 			return false
-		elseif GAMEMODE.Vars.Animatronics[a][2] == GAMEMODE.APos.fnap_scc.Entrance and apos == GAMEMODE.APos.fnap_scc.EntranceD then
+		elseif gvars.Animatronics[a][2] == gapos.fnap_scc.Entrance and apos == gapos.fnap_scc.EntranceD then
 			return false
-		elseif GAMEMODE.Vars.Animatronics[a][2] == GAMEMODE.APos.fnap_scc.EntranceD and apos == GAMEMODE.APos.fnap_scc.DA then
+		elseif gvars.Animatronics[a][2] == gapos.fnap_scc.EntranceD and apos == gapos.fnap_scc.DA then
 			return false
-		elseif GAMEMODE.Vars.Animatronics[a][2] == GAMEMODE.APos.fnap_scc.DA and apos == GAMEMODE.APos.fnap_scc.StaffD then
+		elseif gvars.Animatronics[a][2] == gapos.fnap_scc.DA and apos == gapos.fnap_scc.StaffD then
 			return false
-		elseif GAMEMODE.Vars.Animatronics[a][2] == GAMEMODE.APos.fnap_scc.StaffD and apos == GAMEMODE.APos.fnap_scc.Staff then
+		elseif gvars.Animatronics[a][2] == gapos.fnap_scc.StaffD and apos == gapos.fnap_scc.Staff then
 			return false
-		elseif GAMEMODE.Vars.Animatronics[a][2] == GAMEMODE.APos.fnap_scc.Staff and apos == GAMEMODE.APos.fnap_scc.Office then
+		elseif gvars.Animatronics[a][2] == gapos.fnap_scc.Staff and apos == gapos.fnap_scc.Office then
 			return false
 		end
 
